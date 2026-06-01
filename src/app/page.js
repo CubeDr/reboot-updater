@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import auth from "../lib/auth";
 import configModule from "../lib/config";
 import github from "../lib/github";
+import PromoteForm from "./promote-form";
 import RestoreForm from "./restore-form";
 import UploadForm from "./upload-form";
 
@@ -76,8 +77,20 @@ async function Dashboard({ params, config }) {
 
         {params.success === "upload" ? (
           <div className="success">
-            <strong>업로드 완료</strong>
-            <span>{params.files}개 파일이 GitHub Pages 배포 브랜치에 반영되었습니다.</span>
+            <strong>미리보기 생성 완료</strong>
+            <span>{params.files}개 파일이 preview 브랜치에 반영되었습니다.</span>
+            {params.commit ? (
+              <a href={params.commit} target="_blank" rel="noreferrer">
+                preview 커밋 보기
+              </a>
+            ) : null}
+          </div>
+        ) : null}
+
+        {params.success === "promote" ? (
+          <div className="success">
+            <strong>확정 배포 완료</strong>
+            <span>미리보기 버전이 실제 홈페이지에 배포되었습니다.</span>
             {params.commit ? (
               <a href={params.commit} target="_blank" rel="noreferrer">
                 배포 커밋 보기
@@ -98,7 +111,23 @@ async function Dashboard({ params, config }) {
           </div>
         ) : null}
 
-        <UploadForm maxZipBytes={config.maxZipBytes} />
+        <UploadForm maxZipBytes={config.maxZipBytes} previewUrl={config.previewUrl} />
+      </section>
+
+      <section className="panel preview-panel">
+        <div className="section-heading">
+          <h2>미리보기</h2>
+        </div>
+        <div className="preview-actions">
+          {config.previewUrl ? (
+            <a className="button-link secondary-link" href={config.previewUrl} target="_blank" rel="noreferrer">
+              미리보기 열기
+            </a>
+          ) : (
+            <p className="muted">PREVIEW_URL 환경변수를 설정하면 미리보기 링크가 표시됩니다.</p>
+          )}
+          <PromoteForm />
+        </div>
       </section>
 
       <section className="panel history-panel">
@@ -141,7 +170,7 @@ async function Dashboard({ params, config }) {
         </div>
         <div>
           <span>배포 대상</span>
-          <strong>GitHub Pages main</strong>
+          <strong>{config.homepageRepo}/main</strong>
         </div>
         <div>
           <span>업로드 제한</span>

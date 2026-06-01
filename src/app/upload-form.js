@@ -8,7 +8,7 @@ function formatBytes(bytes) {
   return `${Math.ceil(bytes / 1024 / 1024)} MB`;
 }
 
-export default function UploadForm({ maxZipBytes }) {
+export default function UploadForm({ maxZipBytes, previewUrl }) {
   const inputRef = useRef(null);
   const [status, setStatus] = useState("idle");
   const [progress, setProgress] = useState(0);
@@ -65,6 +65,9 @@ export default function UploadForm({ maxZipBytes }) {
           url.searchParams.set("success", "upload");
           url.searchParams.set("files", String(data.fileCount));
           url.searchParams.set("commit", data.commitUrl);
+          if (data.previewUrl || previewUrl) {
+            url.searchParams.set("preview", data.previewUrl || previewUrl);
+          }
           window.location.href = url.href;
         } catch (error) {
           setStatus("idle");

@@ -2,6 +2,13 @@ const { request } = require("undici");
 
 const API_ROOT = "https://api.github.com";
 
+function branchRefPath(branch) {
+  return branch
+    .split("/")
+    .map((part) => encodeURIComponent(part))
+    .join("/");
+}
+
 async function githubRequest(token, method, path, body) {
   const response = await request(`${API_ROOT}${path}`, {
     method,
@@ -27,8 +34,25 @@ async function githubRequest(token, method, path, body) {
 }
 
 async function getBranchSha({ token, owner, repo, branch }) {
-  const data = await githubRequest(token, "GET", `/repos/${owner}/${repo}/git/ref/heads/${encodeURIComponent(branch)}`);
+  const data = await githubRequest(token, "GET", `/repos/${owner}/${repo}/git/ref/heads/${branchRefPath(branch)}`);
   return data.object.sha;
+}
+
+async function ensureBranch({ token, owner, repo, branch, fallbackBranch = "main" }) {
+  try {
+    return await getBranchSha({ token, owner, repo, branch });
+  } catch (error) {
+    if (!String(error.message).includes("404")) {
+      throw error;
+    }
+  }
+
+  const fallbackSha = await getBranchSha({ token, owner, repo, branch: fallbackBranch });
+  await githubRequest(token, "POST", `/repos/${owner}/${repo}/git/refs`, {
+    ref: `refs/heads/${branch}`,
+    sha: fallbackSha,
+  });
+  return fallbackSha;
 }
 
 async function getCommit({ token, owner, repo, sha }) {
@@ -73,9 +97,18 @@ async function createTreeFromFiles({ token, owner, repo, files, preserveEntries 
   return githubRequest(token, "POST", `/repos/${owner}/${repo}/git/trees`, { tree });
 }
 
-async function publishHomepageFiles({ token, owner, repo, files, summary, preservePaths }) {
-  const currentMainSha = await getBranchSha({ token, owner, repo, branch: "main" });
-  const currentMainCommit = await getCommit({ token, owner, repo, sha: currentMainSha });
+async function commitFilesToBranch({
+  token,
+  owner,
+  repo,
+  branch,
+  files,
+  message,
+  preservePaths = [],
+  fallbackBranch = "main",
+}) {
+  const currentBranchSha = await ensureBranch({ token, owner, repo, branch, fallbackBranch });
+  const currentMainCommit = await getCommit({ token, owner, repo, sha: currentBranchSha });
   const currentTree = await getRecursiveTree({ token, owner, repo, treeSha: currentMainCommit.tree.sha });
 
   const preserveEntries = currentTree
@@ -89,12 +122,12 @@ async function publishHomepageFiles({ token, owner, repo, files, summary, preser
 
   const newTree = await createTreeFromFiles({ token, owner, repo, files, preserveEntries });
   const newCommit = await githubRequest(token, "POST", `/repos/${owner}/${repo}/git/commits`, {
-    message: `Update homepage (${summary.fileCount} files, ${summary.totalBytes} bytes)`,
+    message,
     tree: newTree.sha,
-    parents: [currentMainSha],
+    parents: [currentBranchSha],
   });
 
-  await githubRequest(token, "PATCH", `/repos/${owner}/${repo}/git/refs/heads/main`, {
+  await githubRequest(token, "PATCH", `/repos/${owner}/${repo}/git/refs/heads/${branchRefPath(branch)}`, {
     sha: newCommit.sha,
     force: false,
   });
@@ -104,6 +137,73 @@ async function publishHomepageFiles({ token, owner, repo, files, summary, preser
     shortSha: newCommit.sha.slice(0, 7),
     url: `https://github.com/${owner}/${repo}/commit/${newCommit.sha}`,
   };
+}
+
+function withPreviewMetadata(files, previewCname) {
+  const nextFiles = new Map(files);
+  nextFiles.set(".nojekyll", Buffer.from(""));
+
+  if (previewCname) {
+    nextFiles.set("CNAME", Buffer.from(`${previewCname}\n`));
+  }
+
+  return nextFiles;
+}
+
+async function publishPreviewFiles({ token, owner, repo, branch, files, summary, previewCname }) {
+  return commitFilesToBranch({
+    token,
+    owner,
+    repo,
+    branch,
+    files: withPreviewMetadata(files, previewCname),
+    message: `Update homepage preview (${summary.fileCount} files, ${summary.totalBytes} bytes)`,
+  });
+}
+
+async function publishHomepageFiles({ token, owner, repo, files, summary, preservePaths }) {
+  return commitFilesToBranch({
+    token,
+    owner,
+    repo,
+    branch: "main",
+    files,
+    message: `Update homepage (${summary.fileCount} files, ${summary.totalBytes} bytes)`,
+    preservePaths,
+  });
+}
+
+async function promotePreviewToHomepage({
+  token,
+  owner,
+  previewRepo,
+  previewBranch,
+  homepageRepo,
+  preservePaths,
+  previewOnlyPaths,
+}) {
+  const previewSha = await getBranchSha({ token, owner, repo: previewRepo, branch: previewBranch });
+  const previewCommit = await getCommit({ token, owner, repo: previewRepo, sha: previewSha });
+  const previewTree = await getRecursiveTree({ token, owner, repo: previewRepo, treeSha: previewCommit.tree.sha });
+
+  const files = new Map();
+  for (const entry of previewTree) {
+    if (entry.type !== "blob") continue;
+    if (shouldPreservePath(entry.path, previewOnlyPaths)) continue;
+
+    const blob = await githubRequest(token, "GET", `/repos/${owner}/${previewRepo}/git/blobs/${entry.sha}`);
+    files.set(entry.path, Buffer.from(blob.content.replace(/\n/g, ""), "base64"));
+  }
+
+  return commitFilesToBranch({
+    token,
+    owner,
+    repo: homepageRepo,
+    branch: "main",
+    files,
+    message: `Promote preview to homepage (${previewSha.slice(0, 7)})`,
+    preservePaths,
+  });
 }
 
 async function listRecentMainCommits({ token, owner, repo, limit = 8 }) {
@@ -149,4 +249,10 @@ async function restoreMainToCommit({ token, owner, repo, targetSha }) {
   };
 }
 
-module.exports = { listRecentMainCommits, publishHomepageFiles, restoreMainToCommit };
+module.exports = {
+  listRecentMainCommits,
+  promotePreviewToHomepage,
+  publishHomepageFiles,
+  publishPreviewFiles,
+  restoreMainToCommit,
+};

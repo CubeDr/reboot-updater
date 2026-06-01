@@ -9,7 +9,7 @@ import zip from "../../../lib/zip";
 const { COOKIE_NAME, isValidSessionCookie } = auth;
 const { deleteBlobQuietly, readPrivateBlob } = blob;
 const { getConfig } = configModule;
-const { publishHomepageFiles } = github;
+const { publishPreviewFiles } = github;
 const { readHomepageZip } = zip;
 
 export const runtime = "nodejs";
@@ -48,13 +48,14 @@ export async function POST(request) {
       maxUnzippedBytes: config.maxUnzippedBytes,
     });
 
-    const result = await publishHomepageFiles({
+    const result = await publishPreviewFiles({
       token: config.githubToken,
       owner: config.githubOwner,
-      repo: config.homepageRepo,
+      repo: config.updaterRepo,
+      branch: config.previewBranch,
       files,
       summary,
-      preservePaths: config.preservePaths,
+      previewCname: config.previewCname,
     });
 
     await deleteBlobQuietly(blobUrl, config.blobReadWriteToken);
@@ -62,6 +63,7 @@ export async function POST(request) {
     return NextResponse.json({
       commitUrl: result.url,
       fileCount: summary.fileCount,
+      previewUrl: config.previewUrl,
       totalBytes: summary.totalBytes,
     });
   } catch (error) {
