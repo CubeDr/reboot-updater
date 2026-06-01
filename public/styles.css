@@ -210,6 +210,11 @@ button:hover {
 }
 
 .section-heading {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: space-between;
   margin-bottom: 18px;
 }
 
@@ -231,12 +236,12 @@ button:hover {
   margin-bottom: 14px;
 }
 
-.status-line {
-  border-radius: 6px;
+.status-chip {
+  border-radius: 999px;
   font-size: 13px;
   font-weight: 800;
-  margin: 0 0 14px;
-  padding: 10px 12px;
+  padding: 6px 10px;
+  white-space: nowrap;
 }
 
 .status-ready {

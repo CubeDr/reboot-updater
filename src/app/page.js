@@ -159,15 +159,15 @@ async function Dashboard({ params, config }) {
       <section className="panel preview-panel">
         <div className="section-heading">
           <h2>미리보기</h2>
+          {previewPagesStatus ? (
+            <span className={`status-chip status-${previewPagesStatus.state}`}>{previewPagesStatus.label}</span>
+          ) : null}
         </div>
         {previewError ? <p className="alert">미리보기 상태를 불러오지 못했습니다. {previewError}</p> : null}
         {!previewError && previewStatus.exists ? (
           <p className="muted preview-status">
             preview 브랜치에 {previewStatus.fileCount}개 파일이 있습니다. 최신 변경: {previewStatus.message}
           </p>
-        ) : null}
-        {previewPagesStatus ? (
-          <p className={`status-line status-${previewPagesStatus.state}`}>{previewPagesStatus.label}</p>
         ) : null}
         {!previewError && !previewStatus.exists ? (
           <p className="muted preview-status">아직 생성된 미리보기가 없습니다. zip을 업로드하면 preview 브랜치가 생성됩니다.</p>
@@ -189,6 +189,9 @@ async function Dashboard({ params, config }) {
       <section className="panel history-panel">
         <div className="section-heading">
           <h2>최근 배포 이력</h2>
+          {productionPagesStatus ? (
+            <span className={`status-chip status-${productionPagesStatus.state}`}>{productionPagesStatus.label}</span>
+          ) : null}
         </div>
 
         {historyError ? <p className="alert">배포 이력을 불러오지 못했습니다. {historyError}</p> : null}
@@ -197,9 +200,6 @@ async function Dashboard({ params, config }) {
 
         {!historyError && deployments.length > 0 ? (
           <div className="history-list">
-            {productionPagesStatus ? (
-              <p className={`status-line status-${productionPagesStatus.state}`}>{productionPagesStatus.label}</p>
-            ) : null}
             {deployments.map((deployment, index) => (
               <article className="history-item" key={deployment.sha}>
                 <div>
