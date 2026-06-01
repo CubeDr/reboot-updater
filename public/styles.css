@@ -327,6 +327,24 @@ button:hover {
   text-decoration: none;
 }
 
+.icon-link {
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--text);
+  display: inline-flex;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 13px;
+  height: 36px;
+  justify-content: center;
+  min-width: 42px;
+  padding: 0 10px;
+}
+
+.icon-link:hover {
+  background: #f1f5f9;
+}
+
 .history-actions form {
   margin: 0;
 }

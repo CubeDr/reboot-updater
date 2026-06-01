@@ -102,7 +102,7 @@ async function getPagesBuildStatus({ token, owner, repo, targetSha }) {
     if (build.commit !== targetSha) {
       return {
         state: "pending",
-        label: "GitHub Pages 배포 대기 중",
+        label: "배포 대기 중",
         isReady: false,
         isRefreshing: true,
       };
@@ -111,7 +111,7 @@ async function getPagesBuildStatus({ token, owner, repo, targetSha }) {
     if (build.status === "built") {
       return {
         state: "ready",
-        label: "GitHub Pages 배포 완료",
+        label: "배포 완료",
         isReady: true,
         isRefreshing: false,
         updatedAt: build.updated_at,
@@ -121,7 +121,7 @@ async function getPagesBuildStatus({ token, owner, repo, targetSha }) {
     if (build.status === "errored") {
       return {
         state: "failed",
-        label: build.error?.message || "GitHub Pages 배포 실패",
+        label: build.error?.message || "배포 실패",
         isReady: false,
         isRefreshing: false,
       };
@@ -129,7 +129,7 @@ async function getPagesBuildStatus({ token, owner, repo, targetSha }) {
 
     return {
       state: build.status || "unknown",
-      label: `GitHub Pages 배포 ${build.status || "확인 중"}`,
+      label: `배포 ${build.status || "확인 중"}`,
       isReady: false,
       isRefreshing: true,
     };
@@ -137,7 +137,7 @@ async function getPagesBuildStatus({ token, owner, repo, targetSha }) {
     if (String(error.message).includes("404")) {
       return {
         state: "unavailable",
-        label: "GitHub Pages 배포 상태를 찾을 수 없습니다.",
+        label: "배포 상태를 찾을 수 없습니다.",
         isReady: false,
         isRefreshing: false,
       };

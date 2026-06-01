@@ -97,7 +97,7 @@ async function Dashboard({ params, config }) {
     } catch (error) {
       previewPagesStatus = {
         state: "error",
-        label: `GitHub Pages 배포 상태를 불러오지 못했습니다. ${error.message}`,
+        label: `배포 상태를 불러오지 못했습니다. ${error.message}`,
         isReady: false,
         isRefreshing: false,
       };
@@ -115,7 +115,7 @@ async function Dashboard({ params, config }) {
     } catch (error) {
       productionPagesStatus = {
         state: "error",
-        label: `실제 홈페이지 배포 상태를 불러오지 못했습니다. ${error.message}`,
+        label: `배포 상태를 불러오지 못했습니다. ${error.message}`,
         isReady: false,
         isRefreshing: false,
       };
@@ -144,7 +144,7 @@ async function Dashboard({ params, config }) {
         <h2>사용 방법</h2>
         <ol>
           <li>변경 사항을 적고 홈페이지 zip 파일을 업로드합니다.</li>
-          <li>GitHub Pages 배포 완료 상태가 표시될 때까지 기다립니다.</li>
+          <li>배포 완료 상태가 표시될 때까지 기다립니다.</li>
           <li>미리보기 링크에서 수정된 홈페이지를 확인합니다.</li>
           <li>문제가 없으면 확정 배포를 누르고, 실제 홈페이지 배포 완료 상태를 확인합니다.</li>
         </ol>
@@ -209,8 +209,8 @@ async function Dashboard({ params, config }) {
                   </span>
                 </div>
                 <div className="history-actions">
-                  <a href={deployment.url} target="_blank" rel="noreferrer">
-                    보기
+                  <a className="icon-link" href={deployment.url} target="_blank" rel="noreferrer" aria-label="커밋 코드 보기" title="커밋 코드 보기">
+                    <span aria-hidden="true">&lt;/&gt;</span>
                   </a>
                   {index === 0 ? <span className="current-badge">현재</span> : <RestoreForm sha={deployment.sha} />}
                 </div>

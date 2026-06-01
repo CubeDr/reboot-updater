@@ -97,7 +97,7 @@ export default function UploadForm({ maxZipBytes }) {
           <div className="progress-bar">
             <span style={{ width: `${status === "publishing" ? 100 : progress}%` }} />
           </div>
-          <strong>{status === "uploading" ? `업로드 중 ${progress}%` : "GitHub Pages 배포 커밋 생성 중"}</strong>
+          <strong>{status === "uploading" ? `업로드 중 ${progress}%` : "배포 준비 중"}</strong>
         </div>
       ) : null}
 
