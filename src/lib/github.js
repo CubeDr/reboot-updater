@@ -95,6 +95,57 @@ async function getBranchSummary({ token, owner, repo, branch, excludePaths = [] 
   }
 }
 
+async function getPagesBuildStatus({ token, owner, repo, targetSha }) {
+  try {
+    const build = await githubRequest(token, "GET", `/repos/${owner}/${repo}/pages/builds/latest`);
+
+    if (build.commit !== targetSha) {
+      return {
+        state: "pending",
+        label: "GitHub Pages 배포 대기 중",
+        isReady: false,
+        isRefreshing: true,
+      };
+    }
+
+    if (build.status === "built") {
+      return {
+        state: "ready",
+        label: "GitHub Pages 배포 완료",
+        isReady: true,
+        isRefreshing: false,
+        updatedAt: build.updated_at,
+      };
+    }
+
+    if (build.status === "errored") {
+      return {
+        state: "failed",
+        label: build.error?.message || "GitHub Pages 배포 실패",
+        isReady: false,
+        isRefreshing: false,
+      };
+    }
+
+    return {
+      state: build.status || "unknown",
+      label: `GitHub Pages 배포 ${build.status || "확인 중"}`,
+      isReady: false,
+      isRefreshing: true,
+    };
+  } catch (error) {
+    if (String(error.message).includes("404")) {
+      return {
+        state: "unavailable",
+        label: "GitHub Pages 배포 상태를 찾을 수 없습니다.",
+        isReady: false,
+        isRefreshing: false,
+      };
+    }
+    throw error;
+  }
+}
+
 function shouldPreservePath(path, preservePaths) {
   return preservePaths.some((preservePath) => path === preservePath || path.startsWith(`${preservePath}/`));
 }
@@ -298,6 +349,7 @@ async function restoreMainToCommit({ token, owner, repo, targetSha }) {
 
 module.exports = {
   getBranchSummary,
+  getPagesBuildStatus,
   listRecentMainCommits,
   promotePreviewToHomepage,
   publishHomepageFiles,

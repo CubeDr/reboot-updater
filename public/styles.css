@@ -231,6 +231,34 @@ button:hover {
   margin-bottom: 14px;
 }
 
+.status-line {
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 800;
+  margin: 0 0 14px;
+  padding: 10px 12px;
+}
+
+.status-ready {
+  background: var(--success-bg);
+  color: var(--success);
+}
+
+.status-pending,
+.status-building,
+.status-queued,
+.status-unknown {
+  background: #fffaeb;
+  color: #b54708;
+}
+
+.status-failed,
+.status-error,
+.status-unavailable {
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+
 .button-link {
   align-items: center;
   border-radius: 6px;

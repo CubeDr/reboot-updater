@@ -3,13 +3,14 @@ import { cookies } from "next/headers";
 import auth from "../lib/auth";
 import configModule from "../lib/config";
 import github from "../lib/github";
+import AutoRefresh from "./auto-refresh";
 import PromoteForm from "./promote-form";
 import RestoreForm from "./restore-form";
 import UploadForm from "./upload-form";
 
 const { COOKIE_NAME, isValidSessionCookie } = auth;
 const { getConfig } = configModule;
-const { getBranchSummary, listRecentMainCommits } = github;
+const { getBranchSummary, getPagesBuildStatus, listRecentMainCommits } = github;
 
 export const dynamic = "force-dynamic";
 
@@ -48,6 +49,8 @@ async function Dashboard({ params, config }) {
   let historyError = null;
   let previewStatus = { exists: false };
   let previewError = null;
+  let previewPagesStatus = null;
+  let productionPagesStatus = null;
 
   try {
     deployments = await listRecentMainCommits({
@@ -75,8 +78,48 @@ async function Dashboard({ params, config }) {
   const hasPendingPreview =
     previewStatus.exists && (!latestDeployment || !latestDeployment.fullMessage?.includes(`Promoted from ${config.updaterRepo}/${config.previewBranch}@${previewStatus.shortSha}`));
 
+  if (previewStatus.exists) {
+    try {
+      previewPagesStatus = await getPagesBuildStatus({
+        token: config.githubToken,
+        owner: config.githubOwner,
+        repo: config.updaterRepo,
+        targetSha: previewStatus.sha,
+      });
+    } catch (error) {
+      previewPagesStatus = {
+        state: "error",
+        label: `GitHub Pages 배포 상태를 불러오지 못했습니다. ${error.message}`,
+        isReady: false,
+        isRefreshing: false,
+      };
+    }
+  }
+
+  if (latestDeployment) {
+    try {
+      productionPagesStatus = await getPagesBuildStatus({
+        token: config.githubToken,
+        owner: config.githubOwner,
+        repo: config.homepageRepo,
+        targetSha: latestDeployment.sha,
+      });
+    } catch (error) {
+      productionPagesStatus = {
+        state: "error",
+        label: `실제 홈페이지 배포 상태를 불러오지 못했습니다. ${error.message}`,
+        isReady: false,
+        isRefreshing: false,
+      };
+    }
+  }
+
+  const previewPagesReady = !previewStatus.exists || previewPagesStatus?.isReady;
+  const shouldRefresh = Boolean(previewPagesStatus?.isRefreshing || productionPagesStatus?.isRefreshing);
+
   return (
     <main className="shell">
+      <AutoRefresh enabled={shouldRefresh} />
       <header className="topbar">
         <div>
           <h1>리부트 홈페이지 업로드</h1>
@@ -113,11 +156,14 @@ async function Dashboard({ params, config }) {
             preview 브랜치에 {previewStatus.fileCount}개 파일이 있습니다. 최신 변경: {previewStatus.message}
           </p>
         ) : null}
+        {previewPagesStatus ? (
+          <p className={`status-line status-${previewPagesStatus.state}`}>{previewPagesStatus.label}</p>
+        ) : null}
         {!previewError && !previewStatus.exists ? (
           <p className="muted preview-status">아직 생성된 미리보기가 없습니다. zip을 업로드하면 preview 브랜치가 생성됩니다.</p>
         ) : null}
         <div className="preview-actions">
-          {config.previewUrl && previewStatus.exists ? (
+          {config.previewUrl && previewStatus.exists && previewPagesReady ? (
             <a className="button-link secondary-link" href={config.previewUrl} target="_blank" rel="noreferrer">
               미리보기 열기
             </a>
@@ -126,7 +172,7 @@ async function Dashboard({ params, config }) {
           ) : (
             <p className="muted">PREVIEW_URL 환경변수를 설정하면 미리보기 링크가 표시됩니다.</p>
           )}
-          {hasPendingPreview ? <PromoteForm disabled={Boolean(previewError)} /> : null}
+          {hasPendingPreview ? <PromoteForm disabled={Boolean(previewError) || !previewPagesReady} /> : null}
         </div>
       </section>
 
@@ -141,6 +187,9 @@ async function Dashboard({ params, config }) {
 
         {!historyError && deployments.length > 0 ? (
           <div className="history-list">
+            {productionPagesStatus ? (
+              <p className={`status-line status-${productionPagesStatus.state}`}>{productionPagesStatus.label}</p>
+            ) : null}
             {deployments.map((deployment, index) => (
               <article className="history-item" key={deployment.sha}>
                 <div>
