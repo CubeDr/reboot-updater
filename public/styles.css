@@ -44,7 +44,7 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  margin-bottom: 24px;
+  margin-bottom: 18px;
 }
 
 .panel {
@@ -86,6 +86,32 @@ h2 {
   display: grid;
   gap: 18px;
   margin-top: 24px;
+}
+
+.upload-stack {
+  margin-top: 0;
+}
+
+.guide {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  margin-bottom: 16px;
+  padding: 18px 20px;
+}
+
+.guide h2 {
+  font-size: 18px;
+  margin: 0 0 10px;
+}
+
+.guide ol {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding-left: 20px;
+  color: var(--muted);
+  font-weight: 700;
 }
 
 label {
@@ -316,43 +342,12 @@ button:hover {
   transition: width 150ms ease;
 }
 
-.details {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin-top: 16px;
-}
-
-.details div {
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: #fff;
-  padding: 14px;
-}
-
-.details span,
-.details strong {
-  display: block;
-}
-
-.details span {
-  color: var(--muted);
-  font-size: 13px;
-  font-weight: 700;
-}
-
-.details strong {
-  margin-top: 4px;
-  overflow-wrap: anywhere;
-}
-
 @media (max-width: 720px) {
   .shell {
     padding: 28px 0;
   }
 
   .topbar,
-  .details,
   .history-item {
     grid-template-columns: 1fr;
   }

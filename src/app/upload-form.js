@@ -17,7 +17,7 @@ export default function UploadForm({ maxZipBytes, previewUrl }) {
 
   return (
     <form
-      className="stack"
+      className="stack upload-stack"
       onSubmit={async (event) => {
         event.preventDefault();
         setMessage("");

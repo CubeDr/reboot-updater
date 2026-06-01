@@ -88,6 +88,15 @@ async function Dashboard({ params, config }) {
         </form>
       </header>
 
+      <section className="guide">
+        <h2>사용 방법</h2>
+        <ol>
+          <li>변경 사항을 적고 홈페이지 zip 파일을 업로드합니다.</li>
+          <li>미리보기 링크에서 수정된 홈페이지를 확인합니다.</li>
+          <li>문제가 없으면 확정 배포를 눌러 실제 홈페이지에 반영합니다.</li>
+        </ol>
+      </section>
+
       <section className="panel">
         {params.error ? <p className="alert">{params.error}</p> : null}
 
