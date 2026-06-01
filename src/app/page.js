@@ -4,6 +4,7 @@ import auth from "../lib/auth";
 import configModule from "../lib/config";
 import github from "../lib/github";
 import RestoreForm from "./restore-form";
+import UploadForm from "./upload-form";
 
 const { COOKIE_NAME, isValidSessionCookie } = auth;
 const { getConfig } = configModule;
@@ -97,13 +98,7 @@ async function Dashboard({ params, config }) {
           </div>
         ) : null}
 
-        <form method="post" action="/api/upload" encType="multipart/form-data" className="stack">
-          <label>
-            홈페이지 zip 파일
-            <input name="homepageZip" type="file" accept=".zip,application/zip" required />
-          </label>
-          <button type="submit">업로드</button>
-        </form>
+        <UploadForm maxZipBytes={config.maxZipBytes} />
       </section>
 
       <section className="panel history-panel">
@@ -150,7 +145,7 @@ async function Dashboard({ params, config }) {
         </div>
         <div>
           <span>업로드 제한</span>
-          <strong>{Math.floor(config.maxZipBytes / 1024 / 1024)} MB</strong>
+          <strong>{Math.ceil(config.maxZipBytes / 1024 / 1024)} MB</strong>
         </div>
       </section>
     </main>

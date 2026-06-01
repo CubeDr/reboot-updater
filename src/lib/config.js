@@ -13,7 +13,7 @@ function getConfig() {
     githubToken: required("GITHUB_TOKEN"),
     githubOwner: process.env.GITHUB_OWNER || "CubeDr",
     homepageRepo: process.env.HOMEPAGE_REPO || "reboot-homepage",
-    maxZipBytes: Number(process.env.MAX_ZIP_BYTES || 4 * 1024 * 1024),
+    maxZipBytes: Number(process.env.MAX_ZIP_BYTES || 100 * 1024 * 1024),
     maxUnzippedBytes: Number(process.env.MAX_UNZIPPED_BYTES || 250 * 1024 * 1024),
     maxZipFiles: Number(process.env.MAX_ZIP_FILES || 5000),
     preservePaths: (process.env.PRESERVE_PATHS || ".github,README.md,README,CNAME,LICENSE,.gitignore,.nojekyll")

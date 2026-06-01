@@ -119,6 +119,11 @@ button {
   padding: 10px 16px;
 }
 
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
 button:hover {
   background: var(--accent-strong);
 }
@@ -231,6 +236,31 @@ button:hover {
   font-weight: 800;
   margin: 0;
   padding: 6px 10px;
+}
+
+.progress-wrap {
+  display: grid;
+  gap: 8px;
+}
+
+.progress-wrap strong {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.progress-bar {
+  height: 10px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #e4e7ec;
+}
+
+.progress-bar span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--accent);
+  transition: width 150ms ease;
 }
 
 .details {

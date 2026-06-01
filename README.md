@@ -24,6 +24,7 @@ Required environment variables:
 - `ADMIN_PASSWORD`: password for the admin UI
 - `SESSION_SECRET`: long random string used to sign the login cookie
 - `GITHUB_TOKEN`: fine-grained PAT with contents read/write access to `CubeDr/reboot-homepage`
+- `BLOB_READ_WRITE_TOKEN`: Vercel Blob read/write token for large zip uploads
 
 Optional variables are documented in `.env.example`.
 
@@ -31,9 +32,9 @@ By default, preserved paths are `.github`, `README.md`, `README`, `CNAME`, `LICE
 
 ## Vercel Setup
 
-Create a Vercel project for this repository and add the same environment variables in Vercel Project Settings.
+Create a Vercel project for this repository, attach a Vercel Blob store, and add the same environment variables in Vercel Project Settings.
 
-The default `MAX_ZIP_BYTES` is `4194304` because Vercel Functions have a 4.5 MB request/response payload limit. If homepage zip files need to be larger, switch the upload path to Vercel Blob client uploads instead of posting the zip directly to the function.
+The app uses Vercel Blob client uploads so large zip files do not pass through a Vercel Function request body. The default `MAX_ZIP_BYTES` is `104857600` (100 MB).
 
 ## GitHub Pages Setup
 
