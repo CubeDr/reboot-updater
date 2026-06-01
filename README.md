@@ -24,7 +24,7 @@ Required environment variables:
 - `ADMIN_PASSWORD`: password for the admin UI
 - `SESSION_SECRET`: long random string used to sign the login cookie
 - `GITHUB_TOKEN`: fine-grained PAT with contents read/write access to `CubeDr/reboot-homepage`
-- `BLOB_READ_WRITE_TOKEN`: Vercel Blob read/write token for large zip uploads
+- `BLOB_READ_WRITE_TOKEN`: Vercel Blob read/write token for large zip uploads. If Vercel creates a prefixed variable such as `BLOB_READ_WRITE_TOKEN_STORE_NAME`, the app will detect it automatically.
 
 Optional variables are documented in `.env.example`.
 

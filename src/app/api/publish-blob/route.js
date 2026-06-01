@@ -22,6 +22,12 @@ export async function POST(request) {
   if (!isValidSessionCookie(session, config.sessionSecret)) {
     return NextResponse.json({ error: "로그인이 필요합니다." }, { status: 401 });
   }
+  if (!config.blobReadWriteToken) {
+    return NextResponse.json(
+      { error: "Vercel Blob read/write token 환경변수가 없습니다. BLOB_READ_WRITE_TOKEN을 확인해주세요." },
+      { status: 500 },
+    );
+  }
 
   let blobUrl = "";
 
@@ -32,7 +38,7 @@ export async function POST(request) {
       throw new Error("Blob URL이 올바르지 않습니다.");
     }
 
-    const zipBuffer = await readPrivateBlob(blobUrl);
+    const zipBuffer = await readPrivateBlob(blobUrl, config.blobReadWriteToken);
     if (zipBuffer.byteLength > config.maxZipBytes) {
       throw new Error(`zip 파일은 ${Math.floor(config.maxZipBytes / 1024 / 1024)} MB 이하만 업로드할 수 있습니다.`);
     }
@@ -51,7 +57,7 @@ export async function POST(request) {
       preservePaths: config.preservePaths,
     });
 
-    await deleteBlobQuietly(blobUrl);
+    await deleteBlobQuietly(blobUrl, config.blobReadWriteToken);
 
     return NextResponse.json({
       commitUrl: result.url,
@@ -60,7 +66,7 @@ export async function POST(request) {
     });
   } catch (error) {
     if (blobUrl) {
-      await deleteBlobQuietly(blobUrl);
+      await deleteBlobQuietly(blobUrl, config.blobReadWriteToken);
     }
     return NextResponse.json({ error: error.message }, { status: 400 });
   }

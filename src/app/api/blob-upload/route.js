@@ -17,12 +17,19 @@ export async function POST(request) {
   if (!isValidSessionCookie(session, config.sessionSecret)) {
     return NextResponse.json({ error: "로그인이 필요합니다." }, { status: 401 });
   }
+  if (!config.blobReadWriteToken) {
+    return NextResponse.json(
+      { error: "Vercel Blob read/write token 환경변수가 없습니다. BLOB_READ_WRITE_TOKEN을 확인해주세요." },
+      { status: 500 },
+    );
+  }
 
   try {
     const body = await request.json();
     const jsonResponse = await handleUpload({
       body,
       request,
+      token: config.blobReadWriteToken,
       onBeforeGenerateToken: async () => ({
         maximumSizeInBytes: config.maxZipBytes,
         addRandomSuffix: true,

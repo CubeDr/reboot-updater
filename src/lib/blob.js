@@ -25,9 +25,10 @@ async function streamToBuffer(stream) {
   return Buffer.concat(chunks);
 }
 
-async function readPrivateBlob(url) {
+async function readPrivateBlob(url, token) {
   const result = await get(url, {
     access: "private",
+    token,
     useCache: false,
   });
 
@@ -38,9 +39,9 @@ async function readPrivateBlob(url) {
   return streamToBuffer(result.stream);
 }
 
-async function deleteBlobQuietly(url) {
+async function deleteBlobQuietly(url, token) {
   try {
-    await del(url);
+    await del(url, { token });
   } catch (error) {
     console.warn(`Could not delete blob ${url}: ${error.message}`);
   }
