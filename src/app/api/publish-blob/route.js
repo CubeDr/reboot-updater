@@ -33,7 +33,14 @@ export async function POST(request) {
 
   try {
     const body = await request.json();
+    const changeSummary = String(body.changeSummary || "").trim();
     blobUrl = String(body.url || "");
+    if (!changeSummary) {
+      throw new Error("변경 사항을 입력해주세요.");
+    }
+    if (changeSummary.length > 140) {
+      throw new Error("변경 사항은 140자 이하로 입력해주세요.");
+    }
     if (!blobUrl.startsWith("https://")) {
       throw new Error("Blob URL이 올바르지 않습니다.");
     }
@@ -56,6 +63,7 @@ export async function POST(request) {
       files,
       summary,
       previewCname: config.previewCname,
+      changeSummary,
     });
 
     await deleteBlobQuietly(blobUrl, config.blobReadWriteToken);

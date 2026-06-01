@@ -81,6 +81,7 @@ async function getBranchSummary({ token, owner, repo, branch, excludePaths = [] 
       shortSha: sha.slice(0, 7),
       fileCount: files.length,
       message: commit.message.split("\n")[0],
+      fullMessage: commit.message,
       url: `https://github.com/${owner}/${repo}/commit/${sha}`,
     };
   } catch (error) {
@@ -173,14 +174,26 @@ function withPreviewMetadata(files, previewCname) {
   return nextFiles;
 }
 
-async function publishPreviewFiles({ token, owner, repo, branch, files, summary, previewCname }) {
+function buildCommitMessage(prefix, changeSummary, details) {
+  const safeSummary = String(changeSummary || "").trim();
+  const subject = safeSummary ? `${prefix}: ${safeSummary}` : prefix;
+
+  if (!details) return subject;
+  return `${subject}\n\n${details}`;
+}
+
+async function publishPreviewFiles({ token, owner, repo, branch, files, summary, previewCname, changeSummary }) {
   return commitFilesToBranch({
     token,
     owner,
     repo,
     branch,
     files: withPreviewMetadata(files, previewCname),
-    message: `Update homepage preview (${summary.fileCount} files, ${summary.totalBytes} bytes)`,
+    message: buildCommitMessage(
+      "Preview homepage update",
+      changeSummary,
+      `${summary.fileCount} files, ${summary.totalBytes} bytes`,
+    ),
   });
 }
 
@@ -224,7 +237,11 @@ async function promotePreviewToHomepage({
     repo: homepageRepo,
     branch: "main",
     files,
-    message: `Promote preview to homepage (${previewSha.slice(0, 7)})`,
+    message: buildCommitMessage(
+      "Publish homepage",
+      previewCommit.message.split("\n")[0].replace(/^Preview homepage update:\s*/, ""),
+      `Promoted from ${previewRepo}/${previewBranch}@${previewSha.slice(0, 7)}`,
+    ),
     preservePaths,
   });
 }

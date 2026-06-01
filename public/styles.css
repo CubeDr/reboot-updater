@@ -107,6 +107,19 @@ input {
   padding: 10px 12px;
 }
 
+textarea {
+  width: 100%;
+  min-height: 88px;
+  resize: vertical;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--text);
+  font: inherit;
+  line-height: 1.45;
+  padding: 10px 12px;
+}
+
 button {
   min-height: 44px;
   border: 0;

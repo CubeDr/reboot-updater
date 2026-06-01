@@ -6,8 +6,8 @@ Vercel-hosted admin portal for publishing [`CubeDr/reboot-homepage`](https://git
 
 1. `reboot-updater` runs on Vercel as a Next.js app.
 2. An admin logs in with `ADMIN_PASSWORD`.
-3. The admin uploads a homepage `.zip`.
-4. The app validates the zip, expands it in a Vercel Function, and publishes it to `CubeDr/reboot-updater/preview`.
+3. The admin writes a short change summary and uploads a homepage `.zip`.
+4. The app validates the zip, expands it in a Vercel Function, and publishes it to `CubeDr/reboot-updater/preview` with the change summary in the commit message.
 5. GitHub Pages serves the `preview` branch for public review.
 6. If the preview is good, the admin promotes it to `CubeDr/reboot-homepage/main`.
 7. GitHub Pages sees the homepage `main` update and publishes the production static homepage.

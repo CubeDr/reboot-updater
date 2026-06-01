@@ -10,6 +10,7 @@ function formatBytes(bytes) {
 
 export default function UploadForm({ maxZipBytes, previewUrl }) {
   const inputRef = useRef(null);
+  const changeSummaryRef = useRef(null);
   const [status, setStatus] = useState("idle");
   const [progress, setProgress] = useState(0);
   const [message, setMessage] = useState("");
@@ -22,6 +23,12 @@ export default function UploadForm({ maxZipBytes, previewUrl }) {
         setMessage("");
 
         const file = inputRef.current?.files?.[0];
+        const changeSummary = changeSummaryRef.current?.value?.trim() || "";
+
+        if (!changeSummary) {
+          setMessage("변경 사항을 입력해주세요.");
+          return;
+        }
         if (!file) {
           setMessage("zip 파일을 선택해주세요.");
           return;
@@ -52,7 +59,7 @@ export default function UploadForm({ maxZipBytes, previewUrl }) {
           const response = await fetch("/api/publish-blob", {
             method: "POST",
             headers: { "content-type": "application/json" },
-            body: JSON.stringify({ url: blob.url }),
+            body: JSON.stringify({ changeSummary, url: blob.url }),
           });
 
           if (!response.ok) {
@@ -75,6 +82,18 @@ export default function UploadForm({ maxZipBytes, previewUrl }) {
         }
       }}
     >
+      <label>
+        뭐가 변경되었나요?
+        <textarea
+          ref={changeSummaryRef}
+          name="changeSummary"
+          rows={3}
+          maxLength={140}
+          placeholder="예: 여름 프로그램 일정과 메인 배너 이미지 변경"
+          required
+        />
+      </label>
+
       <label>
         홈페이지 zip 파일
         <input ref={inputRef} name="homepageZip" type="file" accept=".zip,application/zip" required />

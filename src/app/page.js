@@ -26,7 +26,6 @@ function Login({ error }) {
     <main className="shell auth-shell">
       <section className="panel auth-panel">
         <div>
-          <p className="eyebrow">CubeDr</p>
           <h1>Reboot 홈페이지 업데이트</h1>
         </div>
 
@@ -76,7 +75,6 @@ async function Dashboard({ params, config }) {
     <main className="shell">
       <header className="topbar">
         <div>
-          <p className="eyebrow">CubeDr</p>
           <h1>홈페이지 zip 업로드</h1>
         </div>
         <form method="post" action="/api/logout">
@@ -189,9 +187,7 @@ async function Dashboard({ params, config }) {
       <section className="details">
         <div>
           <span>대상 저장소</span>
-          <strong>
-            {config.githubOwner}/{config.homepageRepo}
-          </strong>
+          <strong>{config.homepageRepo}</strong>
         </div>
         <div>
           <span>배포 대상</span>
