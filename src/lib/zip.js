@@ -31,12 +31,47 @@ function validateEntryName(entryName) {
   }
 }
 
-function validateZip(buffer, limits) {
+function stripSingleRootDirectory(files) {
+  const filePaths = Array.from(files.keys());
+  const hasRootIndex = filePaths.includes("index.html");
+  const topLevelNames = new Set(filePaths.map((filePath) => filePath.split("/")[0]));
+
+  if (hasRootIndex || topLevelNames.size !== 1) {
+    return files;
+  }
+
+  const [rootName] = Array.from(topLevelNames);
+  const stripped = new Map();
+
+  for (const [filePath, content] of files.entries()) {
+    stripped.set(filePath.slice(rootName.length + 1), content);
+  }
+
+  return stripped;
+}
+
+function readEntry(zipfile, entry) {
+  return new Promise((resolve, reject) => {
+    zipfile.openReadStream(entry, (streamError, stream) => {
+      if (streamError) {
+        reject(streamError);
+        return;
+      }
+
+      const chunks = [];
+      stream.on("data", (chunk) => chunks.push(chunk));
+      stream.on("end", () => resolve(Buffer.concat(chunks)));
+      stream.on("error", reject);
+    });
+  });
+}
+
+function readHomepageZip(buffer, limits) {
   return new Promise((resolve, reject) => {
     let fileCount = 0;
     let totalBytes = 0;
     let hasIndex = false;
-    const topLevelNames = new Set();
+    const files = new Map();
 
     yauzl.fromBuffer(buffer, { lazyEntries: true, validateEntrySizes: true }, (openError, zipfile) => {
       if (openError) {
@@ -45,29 +80,26 @@ function validateZip(buffer, limits) {
       }
 
       zipfile.readEntry();
-      zipfile.on("entry", (entry) => {
+      zipfile.on("entry", async (entry) => {
         try {
           const isDirectory = entry.fileName.endsWith("/");
           const cleanName = isDirectory ? entry.fileName.slice(0, -1) : entry.fileName;
 
           if (cleanName) {
             validateEntryName(cleanName);
-            topLevelNames.add(cleanName.split("/")[0]);
           }
 
           if (!isDirectory) {
             fileCount += 1;
             totalBytes += entry.uncompressedSize;
-            if (cleanName === "index.html" || cleanName.endsWith("/index.html")) {
-              hasIndex = true;
+            if (fileCount > limits.maxZipFiles) {
+              throw new Error(`Too many files in zip. Limit: ${limits.maxZipFiles}`);
             }
-          }
+            if (totalBytes > limits.maxUnzippedBytes) {
+              throw new Error(`Unzipped content is too large. Limit: ${limits.maxUnzippedBytes} bytes`);
+            }
 
-          if (fileCount > limits.maxZipFiles) {
-            throw new Error(`Too many files in zip. Limit: ${limits.maxZipFiles}`);
-          }
-          if (totalBytes > limits.maxUnzippedBytes) {
-            throw new Error(`Unzipped content is too large. Limit: ${limits.maxUnzippedBytes} bytes`);
+            files.set(cleanName, await readEntry(zipfile, entry));
           }
         } catch (validationError) {
           zipfile.close();
@@ -79,12 +111,22 @@ function validateZip(buffer, limits) {
       });
 
       zipfile.on("end", () => {
+        const normalizedFiles = stripSingleRootDirectory(files);
+        hasIndex = normalizedFiles.has("index.html");
+
         if (!hasIndex) {
-          reject(new Error("Zip must contain an index.html file."));
+          reject(new Error("Zip must contain an index.html file at the site root."));
           return;
         }
 
-        resolve({ fileCount, totalBytes, topLevelNames: Array.from(topLevelNames).sort() });
+        resolve({
+          files: normalizedFiles,
+          summary: {
+            fileCount: normalizedFiles.size,
+            totalBytes,
+            topLevelNames: Array.from(new Set(Array.from(normalizedFiles.keys()).map((filePath) => filePath.split("/")[0]))).sort(),
+          },
+        });
       });
 
       zipfile.on("error", reject);
@@ -92,4 +134,4 @@ function validateZip(buffer, limits) {
   });
 }
 
-module.exports = { validateZip };
+module.exports = { readHomepageZip };

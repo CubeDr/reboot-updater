@@ -1,21 +1,22 @@
 # reboot-updater
 
-Admin-only upload portal for updating [`CubeDr/reboot-homepage`](https://github.com/CubeDr/reboot-homepage).
+Vercel-hosted admin portal for publishing [`CubeDr/reboot-homepage`](https://github.com/CubeDr/reboot-homepage), which is served by GitHub Pages.
 
 ## Flow
 
-1. An admin logs in with `ADMIN_PASSWORD`.
-2. The admin uploads a homepage `.zip`.
-3. The app validates the zip and commits it to the `zip` branch of `CubeDr/reboot-homepage` as `site.zip`.
-4. A GitHub Action in `reboot-homepage` unzips `site.zip`, replaces the web files on `main`, preserves repository metadata, and pushes the result.
-5. If a published update is wrong, the admin can restore a recent `main` commit from the updater UI.
+1. `reboot-updater` runs on Vercel as a Next.js app.
+2. An admin logs in with `ADMIN_PASSWORD`.
+3. The admin uploads a homepage `.zip`.
+4. The app validates the zip, expands it in a Vercel Function, preserves repository metadata, and creates a new commit directly on `CubeDr/reboot-homepage/main`.
+5. GitHub Pages sees the `main` update and publishes the static homepage.
+6. If a published update is wrong, the admin can restore a recent `main` commit from the updater UI.
 
-## Setup
+## Local Setup
 
 ```sh
 cp .env.example .env
 npm install
-npm start
+npm run dev
 ```
 
 Required environment variables:
@@ -26,40 +27,35 @@ Required environment variables:
 
 Optional variables are documented in `.env.example`.
 
-## Install the homepage workflow
+By default, preserved paths are `.github`, `README.md`, `README`, `CNAME`, `LICENSE`, `.gitignore`, and `.nojekyll`.
 
-Copy `reboot-homepage-workflow.yml` into `CubeDr/reboot-homepage` at:
+## Vercel Setup
+
+Create a Vercel project for this repository and add the same environment variables in Vercel Project Settings.
+
+The default `MAX_ZIP_BYTES` is `4194304` because Vercel Functions have a 4.5 MB request/response payload limit. If homepage zip files need to be larger, switch the upload path to Vercel Blob client uploads instead of posting the zip directly to the function.
+
+## GitHub Pages Setup
+
+In `CubeDr/reboot-homepage`, configure GitHub Pages to publish from:
 
 ```text
-.github/workflows/publish-uploaded-homepage.yml
+Branch: main
+Folder: /
 ```
 
-Then add a repository secret in `CubeDr/reboot-homepage`:
+No updater-specific GitHub Action is required. The updater creates normal commits on `main`.
 
-```text
-REBOOT_HOMEPAGE_PAT=github_pat_xxx
-```
-
-Use a fine-grained PAT with contents read/write access to `CubeDr/reboot-homepage`. This PAT is used instead of the default `GITHUB_TOKEN` so the push to `main` can trigger the normal GitHub Pages deployment flow.
-
-## Zip validation
+## Zip Validation
 
 The app rejects zips that:
 
 - exceed configured upload or extracted-size limits
 - contain too many files
-- do not contain `index.html`
+- do not contain `index.html` at the site root after optional single-root-folder stripping
 - contain `.git` or `.github`
 - contain absolute paths, path traversal, backslashes, or unsupported path characters
 
-## Preview options
-
-GitHub Pages has one production site per repository Pages configuration. For preview URLs, use one of these patterns:
-
-- create a PR from a preview branch and use a third-party preview host such as Cloudflare Pages, Vercel, or Netlify
-- make the updater push to `preview` first, then expose a manual approve button that copies the same zip to `zip`
-- use GitHub Actions artifacts for downloadable previews, without a public URL
-
-## Restore behavior
+## Restore Behavior
 
 The restore button does not rewrite git history. It reads the selected past commit's file tree, creates a new commit on top of the current `main`, and points `main` at that new commit. This makes rollback auditable and lets GitHub Pages see a normal new commit.

@@ -29,28 +29,9 @@ function isValidSessionCookie(cookieValue, secret) {
   return crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expected));
 }
 
-function setSession(res, secret) {
-  res.cookie(COOKIE_NAME, createSessionCookie(secret), {
-    httpOnly: true,
-    sameSite: "strict",
-    secure: process.env.NODE_ENV === "production",
-    maxAge: ONE_DAY_SECONDS * 1000,
-  });
-}
-
-function clearSession(res) {
-  res.clearCookie(COOKIE_NAME);
-}
-
-function requireAuth(secret) {
-  return (req, res, next) => {
-    if (isValidSessionCookie(req.cookies[COOKIE_NAME], secret)) {
-      next();
-      return;
-    }
-
-    res.redirect("/");
-  };
-}
-
-module.exports = { clearSession, requireAuth, setSession };
+module.exports = {
+  COOKIE_NAME,
+  ONE_DAY_SECONDS,
+  createSessionCookie,
+  isValidSessionCookie,
+};
