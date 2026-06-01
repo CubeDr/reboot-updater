@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Reboot Updater</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="shell auth-shell">
+      <section class="panel auth-panel">
+        <div>
+          <p class="eyebrow">CubeDr</p>
+          <h1>Reboot 홈페이지 업데이트</h1>
+        </div>
+
+        <% if (error) { %>
+          <p class="alert"><%= error %></p>
+        <% } %>
+
+        <form method="post" action="/login" class="stack">
+          <label>
+            관리자 비밀번호
+            <input name="password" type="password" autocomplete="current-password" required autofocus />
+          </label>
+          <button type="submit">로그인</button>
+        </form>
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,76 @@
+name: Publish uploaded homepage zip
+
+on:
+  push:
+    branches:
+      - zip
+    paths:
+      - site.zip
+
+permissions:
+  contents: read
+
+concurrency:
+  group: homepage-upload
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout uploaded zip
+        uses: actions/checkout@v4
+        with:
+          ref: zip
+          path: upload
+
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: site
+          token: ${{ secrets.REBOOT_HOMEPAGE_PAT }}
+
+      - name: Replace web files
+        shell: bash
+        env:
+          PRESERVE_PATHS: ".github README.md README CNAME LICENSE .gitignore"
+        run: |
+          set -euo pipefail
+          mkdir -p preserved extracted
+
+          cd site
+          for item in $PRESERVE_PATHS; do
+            if [ -e "$item" ]; then
+              mkdir -p "../preserved/$(dirname "$item")"
+              cp -a "$item" "../preserved/$item"
+            fi
+          done
+          find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          cd ..
+
+          unzip -q upload/site.zip -d extracted
+          shopt -s dotglob nullglob
+          entries=(extracted/*)
+          if [ "${#entries[@]}" -eq 1 ] && [ -d "${entries[0]}" ] && [ ! -f extracted/index.html ]; then
+            cp -a "${entries[0]}"/. site/
+          else
+            cp -a extracted/. site/
+          fi
+
+          cp -a preserved/. site/ 2>/dev/null || true
+
+      - name: Commit to main
+        shell: bash
+        working-directory: site
+        run: |
+          set -euo pipefail
+          git config user.name "reboot-updater"
+          git config user.email "reboot-updater@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to publish."
+            exit 0
+          fi
+          git commit -m "Update homepage from uploaded zip"
+          git push origin main

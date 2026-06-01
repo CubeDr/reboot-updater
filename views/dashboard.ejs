@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Reboot Updater</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">CubeDr</p>
+          <h1>홈페이지 zip 업로드</h1>
+        </div>
+        <form method="post" action="/logout">
+          <button class="secondary" type="submit">로그아웃</button>
+        </form>
+      </header>
+
+      <section class="panel">
+        <% if (error) { %>
+          <p class="alert"><%= error %></p>
+        <% } %>
+
+        <% if (result) { %>
+          <div class="success">
+            <strong>업로드 완료</strong>
+            <span><%= result.fileCount %>개 파일, <%= result.totalBytes %> bytes</span>
+            <a href="<%= result.commitUrl %>" target="_blank" rel="noreferrer">zip 브랜치 커밋 보기</a>
+          </div>
+        <% } %>
+
+        <form method="post" action="/upload" enctype="multipart/form-data" class="stack">
+          <label>
+            홈페이지 zip 파일
+            <input name="homepageZip" type="file" accept=".zip,application/zip" required />
+          </label>
+          <button type="submit">업로드</button>
+        </form>
+      </section>
+
+      <section class="details">
+        <div>
+          <span>대상 저장소</span>
+          <strong><%= config.githubOwner %>/<%= config.homepageRepo %></strong>
+        </div>
+        <div>
+          <span>업로드 브랜치</span>
+          <strong><%= config.zipBranch %></strong>
+        </div>
+        <div>
+          <span>zip 경로</span>
+          <strong><%= config.zipPath %></strong>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
