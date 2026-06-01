@@ -1,6 +1,6 @@
 "use client";
 
-export default function PromoteForm() {
+export default function PromoteForm({ disabled }) {
   return (
     <form
       method="post"
@@ -10,7 +10,9 @@ export default function PromoteForm() {
         if (!ok) event.preventDefault();
       }}
     >
-      <button type="submit">확정 배포</button>
+      <button type="submit" disabled={disabled}>
+        확정 배포
+      </button>
     </form>
   );
 }

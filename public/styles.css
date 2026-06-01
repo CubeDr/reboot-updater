@@ -188,6 +188,10 @@ button:hover {
   gap: 10px;
 }
 
+.preview-status {
+  margin-bottom: 14px;
+}
+
 .button-link {
   align-items: center;
   border-radius: 6px;
@@ -205,6 +209,13 @@ button:hover {
 
 .secondary-link:hover {
   background: #f1f5f9;
+}
+
+.disabled-link {
+  border: 1px solid var(--line);
+  color: var(--muted);
+  cursor: not-allowed;
+  opacity: 0.65;
 }
 
 .history-list {

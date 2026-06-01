@@ -68,6 +68,29 @@ async function getRecursiveTree({ token, owner, repo, treeSha }) {
   return data.tree || [];
 }
 
+async function getBranchSummary({ token, owner, repo, branch, excludePaths = [] }) {
+  try {
+    const sha = await getBranchSha({ token, owner, repo, branch });
+    const commit = await getCommit({ token, owner, repo, sha });
+    const tree = await getRecursiveTree({ token, owner, repo, treeSha: commit.tree.sha });
+    const files = tree.filter((entry) => entry.type === "blob" && !shouldPreservePath(entry.path, excludePaths));
+
+    return {
+      exists: true,
+      sha,
+      shortSha: sha.slice(0, 7),
+      fileCount: files.length,
+      message: commit.message.split("\n")[0],
+      url: `https://github.com/${owner}/${repo}/commit/${sha}`,
+    };
+  } catch (error) {
+    if (String(error.message).includes("404")) {
+      return { exists: false };
+    }
+    throw error;
+  }
+}
+
 function shouldPreservePath(path, preservePaths) {
   return preservePaths.some((preservePath) => path === preservePath || path.startsWith(`${preservePath}/`));
 }
@@ -250,6 +273,7 @@ async function restoreMainToCommit({ token, owner, repo, targetSha }) {
 }
 
 module.exports = {
+  getBranchSummary,
   listRecentMainCommits,
   promotePreviewToHomepage,
   publishHomepageFiles,

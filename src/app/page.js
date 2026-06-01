@@ -9,7 +9,7 @@ import UploadForm from "./upload-form";
 
 const { COOKIE_NAME, isValidSessionCookie } = auth;
 const { getConfig } = configModule;
-const { listRecentMainCommits } = github;
+const { getBranchSummary, listRecentMainCommits } = github;
 
 export const dynamic = "force-dynamic";
 
@@ -47,6 +47,8 @@ function Login({ error }) {
 async function Dashboard({ params, config }) {
   let deployments = [];
   let historyError = null;
+  let previewStatus = { exists: false };
+  let previewError = null;
 
   try {
     deployments = await listRecentMainCommits({
@@ -56,6 +58,18 @@ async function Dashboard({ params, config }) {
     });
   } catch (error) {
     historyError = error.message;
+  }
+
+  try {
+    previewStatus = await getBranchSummary({
+      token: config.githubToken,
+      owner: config.githubOwner,
+      repo: config.updaterRepo,
+      branch: config.previewBranch,
+      excludePaths: ["CNAME", ".nojekyll"],
+    });
+  } catch (error) {
+    previewError = error.message;
   }
 
   return (
@@ -75,12 +89,12 @@ async function Dashboard({ params, config }) {
       <section className="panel">
         {params.error ? <p className="alert">{params.error}</p> : null}
 
-        {params.success === "upload" ? (
+        {params.success === "upload" && previewStatus.exists ? (
           <div className="success">
             <strong>미리보기 생성 완료</strong>
-            <span>{params.files}개 파일이 preview 브랜치에 반영되었습니다.</span>
-            {params.commit ? (
-              <a href={params.commit} target="_blank" rel="noreferrer">
+            <span>{previewStatus.fileCount}개 파일이 preview 브랜치에 반영되었습니다.</span>
+            {previewStatus.url ? (
+              <a href={previewStatus.url} target="_blank" rel="noreferrer">
                 preview 커밋 보기
               </a>
             ) : null}
@@ -118,15 +132,26 @@ async function Dashboard({ params, config }) {
         <div className="section-heading">
           <h2>미리보기</h2>
         </div>
+        {previewError ? <p className="alert">미리보기 상태를 불러오지 못했습니다. {previewError}</p> : null}
+        {!previewError && previewStatus.exists ? (
+          <p className="muted preview-status">
+            preview 브랜치에 {previewStatus.fileCount}개 파일이 있습니다. 최신 커밋 {previewStatus.shortSha}
+          </p>
+        ) : null}
+        {!previewError && !previewStatus.exists ? (
+          <p className="muted preview-status">아직 생성된 미리보기가 없습니다. zip을 업로드하면 preview 브랜치가 생성됩니다.</p>
+        ) : null}
         <div className="preview-actions">
-          {config.previewUrl ? (
+          {config.previewUrl && previewStatus.exists ? (
             <a className="button-link secondary-link" href={config.previewUrl} target="_blank" rel="noreferrer">
               미리보기 열기
             </a>
+          ) : config.previewUrl ? (
+            <span className="button-link disabled-link">미리보기 열기</span>
           ) : (
             <p className="muted">PREVIEW_URL 환경변수를 설정하면 미리보기 링크가 표시됩니다.</p>
           )}
-          <PromoteForm />
+          <PromoteForm disabled={!previewStatus.exists || Boolean(previewError)} />
         </div>
       </section>
 
