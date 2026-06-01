@@ -71,12 +71,13 @@ async function Dashboard({ params, config }) {
     previewError = error.message;
   }
 
+  const latestDeployment = deployments[0] || null;
+  const hasPendingPreview =
+    previewStatus.exists && (!latestDeployment || !latestDeployment.fullMessage?.includes(`Promoted from ${config.updaterRepo}/${config.previewBranch}@${previewStatus.shortSha}`));
+
   return (
     <main className="shell">
       <header className="topbar">
-        <div>
-          <h1>홈페이지 zip 업로드</h1>
-        </div>
         <form method="post" action="/api/logout">
           <button className="secondary" type="submit">
             로그아웃
@@ -149,7 +150,7 @@ async function Dashboard({ params, config }) {
           ) : (
             <p className="muted">PREVIEW_URL 환경변수를 설정하면 미리보기 링크가 표시됩니다.</p>
           )}
-          <PromoteForm disabled={!previewStatus.exists || Boolean(previewError)} />
+          {hasPendingPreview ? <PromoteForm disabled={Boolean(previewError)} /> : null}
         </div>
       </section>
 
@@ -182,21 +183,6 @@ async function Dashboard({ params, config }) {
             ))}
           </div>
         ) : null}
-      </section>
-
-      <section className="details">
-        <div>
-          <span>대상 저장소</span>
-          <strong>{config.homepageRepo}</strong>
-        </div>
-        <div>
-          <span>배포 대상</span>
-          <strong>{config.homepageRepo}/main</strong>
-        </div>
-        <div>
-          <span>업로드 제한</span>
-          <strong>{Math.ceil(config.maxZipBytes / 1024 / 1024)} MB</strong>
-        </div>
       </section>
     </main>
   );

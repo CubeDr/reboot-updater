@@ -185,7 +185,7 @@ function withPreviewMetadata(files, previewCname) {
 
 function buildCommitMessage(prefix, changeSummary, details) {
   const safeSummary = String(changeSummary || "").trim();
-  const subject = safeSummary ? `${UPDATER_PREFIX}${prefix}: ${safeSummary}` : `${UPDATER_PREFIX}${prefix}`;
+  const subject = `${UPDATER_PREFIX}${safeSummary || prefix}`;
 
   if (!details) return subject;
   return `${subject}\n\n${details}`;
@@ -198,11 +198,7 @@ async function publishPreviewFiles({ token, owner, repo, branch, files, summary,
     repo,
     branch,
     files: withPreviewMetadata(files, previewCname),
-    message: buildCommitMessage(
-      "Preview",
-      changeSummary,
-      `${summary.fileCount} files, ${summary.totalBytes} bytes`,
-    ),
+    message: buildCommitMessage("Preview homepage update", changeSummary, `${summary.fileCount} files, ${summary.totalBytes} bytes`),
   });
 }
 
@@ -247,8 +243,8 @@ async function promotePreviewToHomepage({
     branch: "main",
     files,
     message: buildCommitMessage(
-      "Publish",
-      displayCommitMessage(previewCommit.message.split("\n")[0]).replace(/^Preview:\s*/, ""),
+      "Publish homepage",
+      displayCommitMessage(previewCommit.message.split("\n")[0]),
       `Promoted from ${previewRepo}/${previewBranch}@${previewSha.slice(0, 7)}`,
     ),
     preservePaths,
@@ -268,6 +264,7 @@ async function listRecentMainCommits({ token, owner, repo, limit = 8 }) {
       sha: commit.sha,
       shortSha: commit.sha.slice(0, 7),
       message: displayCommitMessage(commit.commit.message.split("\n")[0]),
+      fullMessage: commit.commit.message,
       date: commit.commit.author.date,
       url: commit.html_url,
     }));

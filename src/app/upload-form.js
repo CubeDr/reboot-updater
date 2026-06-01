@@ -95,7 +95,7 @@ export default function UploadForm({ maxZipBytes, previewUrl }) {
       </label>
 
       <label>
-        홈페이지 zip 파일
+        홈페이지 zip 파일 ({formatBytes(maxZipBytes)} 이하)
         <input ref={inputRef} name="homepageZip" type="file" accept=".zip,application/zip" required />
       </label>
 
