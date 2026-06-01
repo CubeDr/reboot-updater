@@ -78,6 +78,9 @@ async function Dashboard({ params, config }) {
   return (
     <main className="shell">
       <header className="topbar">
+        <div>
+          <h1>리부트 홈페이지 업로드</h1>
+        </div>
         <form method="post" action="/api/logout">
           <button className="secondary" type="submit">
             로그아웃
@@ -87,42 +90,6 @@ async function Dashboard({ params, config }) {
 
       <section className="panel">
         {params.error ? <p className="alert">{params.error}</p> : null}
-
-        {params.success === "upload" && previewStatus.exists ? (
-          <div className="success">
-            <strong>미리보기 생성 완료</strong>
-            <span>{previewStatus.fileCount}개 파일이 preview 브랜치에 반영되었습니다.</span>
-            {previewStatus.url ? (
-              <a href={previewStatus.url} target="_blank" rel="noreferrer">
-                preview 커밋 보기
-              </a>
-            ) : null}
-          </div>
-        ) : null}
-
-        {params.success === "promote" ? (
-          <div className="success">
-            <strong>확정 배포 완료</strong>
-            <span>미리보기 버전이 실제 홈페이지에 배포되었습니다.</span>
-            {params.commit ? (
-              <a href={params.commit} target="_blank" rel="noreferrer">
-                배포 커밋 보기
-              </a>
-            ) : null}
-          </div>
-        ) : null}
-
-        {params.success === "restore" ? (
-          <div className="success">
-            <strong>복원 요청 완료</strong>
-            <span>선택한 버전으로 복원 커밋이 생성되었습니다.</span>
-            {params.commit ? (
-              <a href={params.commit} target="_blank" rel="noreferrer">
-                복원 커밋 보기
-              </a>
-            ) : null}
-          </div>
-        ) : null}
 
         <UploadForm maxZipBytes={config.maxZipBytes} previewUrl={config.previewUrl} />
       </section>
