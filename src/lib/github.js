@@ -1,6 +1,7 @@
 const { request } = require("undici");
 
 const API_ROOT = "https://api.github.com";
+const UPDATER_PREFIX = "UPDATER: ";
 
 function branchRefPath(branch) {
   return branch
@@ -75,12 +76,14 @@ async function getBranchSummary({ token, owner, repo, branch, excludePaths = [] 
     const tree = await getRecursiveTree({ token, owner, repo, treeSha: commit.tree.sha });
     const files = tree.filter((entry) => entry.type === "blob" && !shouldPreservePath(entry.path, excludePaths));
 
+    const message = displayCommitMessage(commit.message.split("\n")[0]);
+
     return {
       exists: true,
       sha,
       shortSha: sha.slice(0, 7),
       fileCount: files.length,
-      message: commit.message.split("\n")[0],
+      message,
       fullMessage: commit.message,
       url: `https://github.com/${owner}/${repo}/commit/${sha}`,
     };
@@ -94,6 +97,12 @@ async function getBranchSummary({ token, owner, repo, branch, excludePaths = [] 
 
 function shouldPreservePath(path, preservePaths) {
   return preservePaths.some((preservePath) => path === preservePath || path.startsWith(`${preservePath}/`));
+}
+
+function displayCommitMessage(message) {
+  return String(message || "").startsWith(UPDATER_PREFIX)
+    ? String(message).slice(UPDATER_PREFIX.length)
+    : String(message || "");
 }
 
 async function createBlob({ token, owner, repo, content }) {
@@ -176,7 +185,7 @@ function withPreviewMetadata(files, previewCname) {
 
 function buildCommitMessage(prefix, changeSummary, details) {
   const safeSummary = String(changeSummary || "").trim();
-  const subject = safeSummary ? `${prefix}: ${safeSummary}` : prefix;
+  const subject = safeSummary ? `${UPDATER_PREFIX}${prefix}: ${safeSummary}` : `${UPDATER_PREFIX}${prefix}`;
 
   if (!details) return subject;
   return `${subject}\n\n${details}`;
@@ -190,7 +199,7 @@ async function publishPreviewFiles({ token, owner, repo, branch, files, summary,
     branch,
     files: withPreviewMetadata(files, previewCname),
     message: buildCommitMessage(
-      "Preview homepage update",
+      "Preview",
       changeSummary,
       `${summary.fileCount} files, ${summary.totalBytes} bytes`,
     ),
@@ -238,8 +247,8 @@ async function promotePreviewToHomepage({
     branch: "main",
     files,
     message: buildCommitMessage(
-      "Publish homepage",
-      previewCommit.message.split("\n")[0].replace(/^Preview homepage update:\s*/, ""),
+      "Publish",
+      displayCommitMessage(previewCommit.message.split("\n")[0]).replace(/^Preview:\s*/, ""),
       `Promoted from ${previewRepo}/${previewBranch}@${previewSha.slice(0, 7)}`,
     ),
     preservePaths,
@@ -253,14 +262,15 @@ async function listRecentMainCommits({ token, owner, repo, limit = 8 }) {
     `/repos/${owner}/${repo}/commits?sha=main&per_page=${encodeURIComponent(String(limit))}`,
   );
 
-  return commits.map((commit) => ({
-    sha: commit.sha,
-    shortSha: commit.sha.slice(0, 7),
-    message: commit.commit.message.split("\n")[0],
-    date: commit.commit.author.date,
-    author: commit.commit.author.name,
-    url: commit.html_url,
-  }));
+  return commits
+    .filter((commit) => commit.commit.message.startsWith(UPDATER_PREFIX))
+    .map((commit) => ({
+      sha: commit.sha,
+      shortSha: commit.sha.slice(0, 7),
+      message: displayCommitMessage(commit.commit.message.split("\n")[0]),
+      date: commit.commit.author.date,
+      url: commit.html_url,
+    }));
 }
 
 async function restoreMainToCommit({ token, owner, repo, targetSha }) {

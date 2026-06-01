@@ -133,7 +133,7 @@ async function Dashboard({ params, config }) {
         {previewError ? <p className="alert">미리보기 상태를 불러오지 못했습니다. {previewError}</p> : null}
         {!previewError && previewStatus.exists ? (
           <p className="muted preview-status">
-            preview 브랜치에 {previewStatus.fileCount}개 파일이 있습니다. 최신 커밋 {previewStatus.shortSha}
+            preview 브랜치에 {previewStatus.fileCount}개 파일이 있습니다. 최신 변경: {previewStatus.message}
           </p>
         ) : null}
         {!previewError && !previewStatus.exists ? (
@@ -169,7 +169,7 @@ async function Dashboard({ params, config }) {
                 <div>
                   <strong>{deployment.message}</strong>
                   <span>
-                    {deployment.shortSha} · {formatDate(deployment.date)} · {deployment.author}
+                    {deployment.shortSha} · {formatDate(deployment.date)}
                   </span>
                 </div>
                 <div className="history-actions">
