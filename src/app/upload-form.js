@@ -8,7 +8,7 @@ function formatBytes(bytes) {
   return `${Math.ceil(bytes / 1024 / 1024)} MB`;
 }
 
-export default function UploadForm({ maxZipBytes, previewUrl }) {
+export default function UploadForm({ maxZipBytes }) {
   const inputRef = useRef(null);
   const changeSummaryRef = useRef(null);
   const [status, setStatus] = useState("idle");
@@ -67,15 +67,8 @@ export default function UploadForm({ maxZipBytes, previewUrl }) {
             throw new Error(data.error || "업로드를 반영하지 못했습니다.");
           }
 
-          const data = await response.json();
-          const url = new URL("/", window.location.href);
-          url.searchParams.set("success", "upload");
-          url.searchParams.set("files", String(data.fileCount));
-          url.searchParams.set("commit", data.commitUrl);
-          if (data.previewUrl || previewUrl) {
-            url.searchParams.set("preview", data.previewUrl || previewUrl);
-          }
-          window.location.href = url.href;
+          await response.json();
+          window.location.href = new URL("/", window.location.href).href;
         } catch (error) {
           setStatus("idle");
           setMessage(error.message);

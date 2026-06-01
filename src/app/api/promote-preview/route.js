@@ -24,7 +24,7 @@ export async function POST(request) {
   }
 
   try {
-    const result = await promotePreviewToHomepage({
+    await promotePreviewToHomepage({
       token: config.githubToken,
       owner: config.githubOwner,
       previewRepo: config.updaterRepo,
@@ -34,10 +34,7 @@ export async function POST(request) {
       previewOnlyPaths: ["CNAME", ".nojekyll"],
     });
 
-    const url = new URL("/", request.url);
-    url.searchParams.set("success", "promote");
-    url.searchParams.set("commit", result.url);
-    return NextResponse.redirect(url);
+    return NextResponse.redirect(new URL("/", request.url));
   } catch (error) {
     return redirectWithError(request, error.message);
   }

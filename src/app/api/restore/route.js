@@ -24,17 +24,14 @@ export async function POST(request) {
 
   try {
     const formData = await request.formData();
-    const result = await restoreMainToCommit({
+    await restoreMainToCommit({
       token: config.githubToken,
       owner: config.githubOwner,
       repo: config.homepageRepo,
       targetSha: String(formData.get("sha") || ""),
     });
 
-    const url = new URL("/", request.url);
-    url.searchParams.set("success", "restore");
-    url.searchParams.set("commit", result.url);
-    return NextResponse.redirect(url);
+    return NextResponse.redirect(new URL("/", request.url));
   } catch (error) {
     return redirectWithError(request, error.message);
   }
