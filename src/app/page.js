@@ -22,6 +22,14 @@ function formatDate(date) {
   }).format(new Date(date));
 }
 
+function withPreviewVersion(url, sha) {
+  if (!url || !sha) return url;
+
+  const nextUrl = new URL(url);
+  nextUrl.searchParams.set("v", sha.slice(0, 12));
+  return nextUrl.toString();
+}
+
 function Login({ error }) {
   return (
     <main className="shell auth-shell">
@@ -116,6 +124,7 @@ async function Dashboard({ params, config }) {
 
   const previewPagesReady = !previewStatus.exists || previewPagesStatus?.isReady;
   const shouldRefresh = Boolean(previewPagesStatus?.isRefreshing || productionPagesStatus?.isRefreshing);
+  const previewUrl = withPreviewVersion(config.previewUrl, previewStatus.sha);
 
   return (
     <main className="shell">
@@ -164,8 +173,8 @@ async function Dashboard({ params, config }) {
           <p className="muted preview-status">아직 생성된 미리보기가 없습니다. zip을 업로드하면 preview 브랜치가 생성됩니다.</p>
         ) : null}
         <div className="preview-actions">
-          {config.previewUrl && previewStatus.exists && previewPagesReady ? (
-            <a className="button-link secondary-link" href={config.previewUrl} target="_blank" rel="noreferrer">
+          {previewUrl && previewStatus.exists && previewPagesReady ? (
+            <a className="button-link secondary-link" href={previewUrl} target="_blank" rel="noreferrer">
               미리보기 열기
             </a>
           ) : config.previewUrl ? (
