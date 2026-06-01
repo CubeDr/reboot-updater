@@ -31,6 +31,14 @@
           </div>
         <% } %>
 
+        <% if (restore) { %>
+          <div class="success">
+            <strong>복원 요청 완료</strong>
+            <span>새 복원 커밋 <%= restore.shortSha %>이 main에 생성되었습니다.</span>
+            <a href="<%= restore.commitUrl %>" target="_blank" rel="noreferrer">복원 커밋 보기</a>
+          </div>
+        <% } %>
+
         <form method="post" action="/upload" enctype="multipart/form-data" class="stack">
           <label>
             홈페이지 zip 파일
@@ -38,6 +46,48 @@
           </label>
           <button type="submit">업로드</button>
         </form>
+      </section>
+
+      <section class="panel history-panel">
+        <div class="section-heading">
+          <h2>최근 배포 이력</h2>
+        </div>
+
+        <% if (historyError) { %>
+          <p class="alert">배포 이력을 불러오지 못했습니다. <%= historyError %></p>
+        <% } else if (deployments.length === 0) { %>
+          <p class="muted">아직 표시할 배포 이력이 없습니다.</p>
+        <% } else { %>
+          <div class="history-list">
+            <% deployments.forEach((deployment, index) => { %>
+              <article class="history-item">
+                <div>
+                  <strong><%= deployment.message %></strong>
+                  <span>
+                    <%= deployment.shortSha %> ·
+                    <%= new Date(deployment.date).toLocaleString("ko-KR", { timeZone: "Asia/Seoul" }) %> ·
+                    <%= deployment.author %>
+                  </span>
+                </div>
+                <div class="history-actions">
+                  <a href="<%= deployment.url %>" target="_blank" rel="noreferrer">보기</a>
+                  <% if (index === 0) { %>
+                    <span class="current-badge">현재</span>
+                  <% } else { %>
+                    <form
+                      method="post"
+                      action="/restore"
+                      onsubmit="return confirm('선택한 버전으로 홈페이지를 복원할까요? 이 작업은 main 브랜치에 새 복원 커밋을 만듭니다.');"
+                    >
+                      <input type="hidden" name="sha" value="<%= deployment.sha %>" />
+                      <button class="secondary" type="submit">이 버전으로 복원</button>
+                    </form>
+                  <% } %>
+                </div>
+              </article>
+            <% }) %>
+          </div>
+        <% } %>
       </section>
 
       <section class="details">

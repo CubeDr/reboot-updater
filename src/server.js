@@ -4,7 +4,7 @@ const cookieParser = require("cookie-parser");
 
 const { clearSession, requireAuth, setSession } = require("./auth");
 const { config } = require("./config");
-const { uploadZipToBranch } = require("./github");
+const { listRecentMainCommits, restoreMainToCommit, uploadZipToBranch } = require("./github");
 const { validateZip } = require("./zip");
 
 const app = express();
@@ -38,12 +38,32 @@ app.post("/logout", (req, res) => {
   res.redirect("/");
 });
 
-app.get("/dashboard", requireAuth(config.sessionSecret), (req, res) => {
+async function renderDashboard(res, options = {}) {
+  let deployments = [];
+  let historyError = null;
+
+  try {
+    deployments = await listRecentMainCommits({
+      token: config.githubToken,
+      owner: config.githubOwner,
+      repo: config.homepageRepo,
+    });
+  } catch (error) {
+    historyError = error.message;
+  }
+
   res.render("dashboard", {
-    error: null,
-    result: null,
+    deployments,
+    historyError,
+    error: options.error || null,
+    result: options.result || null,
+    restore: options.restore || null,
     config,
   });
+}
+
+app.get("/dashboard", requireAuth(config.sessionSecret), async (req, res) => {
+  await renderDashboard(res);
 });
 
 app.post("/upload", requireAuth(config.sessionSecret), upload.single("homepageZip"), async (req, res) => {
@@ -70,8 +90,7 @@ app.post("/upload", requireAuth(config.sessionSecret), upload.single("homepageZi
       summary,
     });
 
-    res.render("dashboard", {
-      error: null,
+    await renderDashboard(res, {
       result: {
         commitUrl: result.commit.html_url,
         branch: config.zipBranch,
@@ -79,13 +98,34 @@ app.post("/upload", requireAuth(config.sessionSecret), upload.single("homepageZi
         totalBytes: summary.totalBytes,
         topLevelNames: summary.topLevelNames,
       },
-      config,
     });
   } catch (error) {
-    res.status(400).render("dashboard", {
+    res.status(400);
+    await renderDashboard(res, {
       error: error.message,
-      result: null,
-      config,
+    });
+  }
+});
+
+app.post("/restore", requireAuth(config.sessionSecret), async (req, res) => {
+  try {
+    const result = await restoreMainToCommit({
+      token: config.githubToken,
+      owner: config.githubOwner,
+      repo: config.homepageRepo,
+      targetSha: req.body.sha,
+    });
+
+    await renderDashboard(res, {
+      restore: {
+        commitUrl: result.url,
+        shortSha: result.shortSha,
+      },
+    });
+  } catch (error) {
+    res.status(400);
+    await renderDashboard(res, {
+      error: error.message,
     });
   }
 });

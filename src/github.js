@@ -77,4 +77,51 @@ async function uploadZipToBranch({ token, owner, repo, branch, path, zipBuffer, 
   return githubRequest(token, "PUT", `/repos/${owner}/${repo}/contents/${encodeURIComponent(path)}`, payload);
 }
 
-module.exports = { uploadZipToBranch };
+async function listRecentMainCommits({ token, owner, repo, limit = 8 }) {
+  const commits = await githubRequest(
+    token,
+    "GET",
+    `/repos/${owner}/${repo}/commits?sha=main&per_page=${encodeURIComponent(String(limit))}`,
+  );
+
+  return commits.map((commit) => ({
+    sha: commit.sha,
+    shortSha: commit.sha.slice(0, 7),
+    message: commit.commit.message.split("\n")[0],
+    date: commit.commit.author.date,
+    author: commit.commit.author.name,
+    url: commit.html_url,
+  }));
+}
+
+async function restoreMainToCommit({ token, owner, repo, targetSha }) {
+  if (!/^[0-9a-f]{40}$/i.test(targetSha)) {
+    throw new Error("복원할 커밋 정보가 올바르지 않습니다.");
+  }
+
+  const currentMainSha = await getBranchSha({ token, owner, repo, branch: "main" });
+  const targetCommit = await githubRequest(token, "GET", `/repos/${owner}/${repo}/git/commits/${targetSha}`);
+
+  if (targetCommit.tree.sha) {
+    const newCommit = await githubRequest(token, "POST", `/repos/${owner}/${repo}/git/commits`, {
+      message: `Restore homepage to ${targetSha.slice(0, 7)}`,
+      tree: targetCommit.tree.sha,
+      parents: [currentMainSha],
+    });
+
+    await githubRequest(token, "PATCH", `/repos/${owner}/${repo}/git/refs/heads/main`, {
+      sha: newCommit.sha,
+      force: false,
+    });
+
+    return {
+      sha: newCommit.sha,
+      shortSha: newCommit.sha.slice(0, 7),
+      url: `https://github.com/${owner}/${repo}/commit/${newCommit.sha}`,
+    };
+  }
+
+  throw new Error("대상 커밋의 파일 트리를 찾을 수 없습니다.");
+}
+
+module.exports = { listRecentMainCommits, restoreMainToCommit, uploadZipToBranch };

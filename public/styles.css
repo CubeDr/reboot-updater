@@ -75,6 +75,13 @@ h1 {
   letter-spacing: 0;
 }
 
+h2 {
+  margin: 0;
+  font-size: 21px;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
 .stack {
   display: grid;
   gap: 18px;
@@ -153,6 +160,79 @@ button:hover {
   font-weight: 800;
 }
 
+.muted {
+  margin: 0;
+  color: var(--muted);
+}
+
+.section-heading {
+  margin-bottom: 18px;
+}
+
+.history-panel {
+  margin-top: 16px;
+}
+
+.history-list {
+  display: grid;
+  gap: 10px;
+}
+
+.history-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 14px;
+}
+
+.history-item strong,
+.history-item span {
+  display: block;
+}
+
+.history-item strong {
+  overflow-wrap: anywhere;
+}
+
+.history-item span {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.history-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.history-actions a {
+  color: var(--accent);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.history-actions form {
+  margin: 0;
+}
+
+.history-actions button {
+  min-height: 36px;
+}
+
+.current-badge {
+  border-radius: 999px;
+  background: #eef4ff;
+  color: #3538cd;
+  font-size: 13px;
+  font-weight: 800;
+  margin: 0;
+  padding: 6px 10px;
+}
+
 .details {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -189,11 +269,17 @@ button:hover {
   }
 
   .topbar,
-  .details {
+  .details,
+  .history-item {
     grid-template-columns: 1fr;
   }
 
   .topbar {
     display: grid;
+  }
+
+  .history-actions {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }

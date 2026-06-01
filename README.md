@@ -8,6 +8,7 @@ Admin-only upload portal for updating [`CubeDr/reboot-homepage`](https://github.
 2. The admin uploads a homepage `.zip`.
 3. The app validates the zip and commits it to the `zip` branch of `CubeDr/reboot-homepage` as `site.zip`.
 4. A GitHub Action in `reboot-homepage` unzips `site.zip`, replaces the web files on `main`, preserves repository metadata, and pushes the result.
+5. If a published update is wrong, the admin can restore a recent `main` commit from the updater UI.
 
 ## Setup
 
@@ -58,3 +59,7 @@ GitHub Pages has one production site per repository Pages configuration. For pre
 - create a PR from a preview branch and use a third-party preview host such as Cloudflare Pages, Vercel, or Netlify
 - make the updater push to `preview` first, then expose a manual approve button that copies the same zip to `zip`
 - use GitHub Actions artifacts for downloadable previews, without a public URL
+
+## Restore behavior
+
+The restore button does not rewrite git history. It reads the selected past commit's file tree, creates a new commit on top of the current `main`, and points `main` at that new commit. This makes rollback auditable and lets GitHub Pages see a normal new commit.
