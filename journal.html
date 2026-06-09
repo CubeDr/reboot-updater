@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>배드민턴 일지 | 리부트아카데미</title>
+  <meta name="description" content="리부트아카데미 회원 전용 배드민턴 연습 일지. 오늘 연습한 것, 잘된 점, 보완할 점을 기록하고 코치 피드백을 받아보세요." />
+  <meta name="robots" content="noindex" />
+  <link rel="icon" type="image/png" href="assets/img/favicon.png?v=1" />
+  <link rel="apple-touch-icon" href="assets/img/favicon.png?v=1" />
+  <link rel="stylesheet" href="assets/css/styles.css?v=2" />
+  <link rel="stylesheet" href="assets/css/journal.css?v=2" />
+</head>
+<body>
+  <a class="skip-link" href="#main">본문 바로가기</a>
+
+  <!-- ===== NAV ===== -->
+  <header class="nav" data-nav>
+    <div class="container nav__inner">
+      <a class="brand" href="index.html" aria-label="리부트 배드민턴 홈">
+        <span class="brand__mark" aria-hidden="true">
+          <img src="assets/img/reboot-mark.png?v=2" alt="" style="height:38px;width:auto;display:block;position:relative;top:-3px" />
+        </span>
+        <span class="brand__word">REBOOT<small>BADMINTON</small></span>
+      </a>
+
+      <nav class="nav__links" aria-label="주요 메뉴">
+        <a href="index.html">홈</a>
+        <a href="about.html">아카데미</a>
+        <a href="programs.html">프로그램</a>
+        <a href="coaches.html">코치진</a>
+        <a href="awards.html">대회 입상</a>
+        <a href="locations.html">오시는 길</a>
+        <a href="journal.html" aria-current="page">회원 일지</a>
+      </nav>
+
+      <div class="nav__cta">
+        <a class="btn btn--primary" href="contact.html">예약/상담 신청</a>
+        <button class="nav__toggle" data-nav-toggle aria-label="메뉴 열기" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" class="jr">
+    <div class="container jr__wrap">
+
+      <!-- 로딩 -->
+      <div id="jr-loading" class="jr-center">불러오는 중…</div>
+
+      <!-- 설정 필요 안내 (config 미설정 시) -->
+      <div id="jr-setup" class="jr-setup jr-card" hidden>
+        <h1 style="font-size:1.4rem;margin-bottom:8px">일지 기능 설정이 필요해요</h1>
+        <p style="color:var(--c-fg-soft)">관리자(대표님)만 보이는 안내입니다. 아래 순서대로 한 번만 설정하면 됩니다.</p>
+        <ol>
+          <li>무료 <code>Supabase</code> 가입 후 새 프로젝트를 만듭니다.</li>
+          <li>제공된 SQL을 <code>SQL Editor</code>에 붙여넣고 실행합니다.</li>
+          <li><code>assets/js/journal-config.js</code> 파일의 URL·키·이메일을 채웁니다.</li>
+          <li>저장 후 이 페이지를 새로고침하면 끝!</li>
+        </ol>
+        <p style="margin-top:16px;color:var(--c-fg-muted);font-size:.9rem">자세한 방법은 프로젝트 폴더의 <code>일지-설정-가이드.md</code> 참고.</p>
+      </div>
+
+      <!-- 로그인 (카카오) -->
+      <div id="jr-auth" class="jr-auth" hidden>
+        <div class="jr-card jr-auth__card jr-auth__card--center">
+          <span class="eyebrow">리부트아카데미</span>
+          <h1 class="jr-auth__title">배드민턴 일지</h1>
+          <p class="jr-auth__sub">오늘 연습을 기록하고<br>코치 피드백을 받아보세요.</p>
+
+          <button id="jr-kakao" class="jr-kakao" type="button">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M12 3C6.48 3 2 6.52 2 10.86c0 2.8 1.86 5.26 4.66 6.64-.2.72-.74 2.68-.84 3.1-.13.52.19.51.4.37.16-.11 2.59-1.76 3.64-2.48.7.1 1.42.15 2.14.15 5.52 0 10-3.52 10-7.78S17.52 3 12 3z"/></svg>
+            카카오로 시작하기
+          </button>
+          <p class="jr-auth__note">카카오 계정으로 바로 시작돼요.<br>비밀번호를 따로 만들 필요가 없습니다.</p>
+
+          <p id="jr-auth-msg" class="jr-msg" role="alert"></p>
+        </div>
+      </div>
+
+      <!-- 회원 화면 -->
+      <div id="jr-member" hidden>
+        <header class="jr-head">
+          <div>
+            <span class="eyebrow">배드민턴 일지</span>
+            <h1 id="jr-hello">안녕하세요</h1>
+          </div>
+          <button class="btn btn--ghost" type="button" data-logout>로그아웃</button>
+        </header>
+
+        <form id="jr-entry" class="jr-card jr-entry" novalidate>
+          <h2 class="jr-entry__title">오늘의 일지 쓰기</h2>
+
+          <div class="jr-grid">
+            <label class="jr-f">날짜
+              <input type="date" name="entry_date" required />
+            </label>
+            <label class="jr-f">연습 시간 (분)
+              <input type="number" name="duration_min" min="0" step="10" inputmode="numeric" placeholder="예: 60" />
+            </label>
+          </div>
+
+          <div class="jr-f">
+            <span class="jr-f__lbl">오늘 컨디션</span>
+            <div class="jr-rate" data-rate="condition" role="group" aria-label="오늘 컨디션 1~5">
+              <button type="button" data-val="1" aria-label="1점">1</button>
+              <button type="button" data-val="2" aria-label="2점">2</button>
+              <button type="button" data-val="3" aria-label="3점">3</button>
+              <button type="button" data-val="4" aria-label="4점">4</button>
+              <button type="button" data-val="5" aria-label="5점">5</button>
+            </div>
+            <input type="hidden" name="condition" value="" />
+          </div>
+
+          <div class="jr-f">
+            <span class="jr-f__lbl">오늘 연습한 것 <small>탭하면 아래 칸에 빠르게 추가돼요</small></span>
+            <div class="jr-chips" data-chips>
+              <button type="button">하이클리어</button>
+              <button type="button">드롭</button>
+              <button type="button">스매시</button>
+              <button type="button">헤어핀</button>
+              <button type="button">드라이브</button>
+              <button type="button">푸시</button>
+              <button type="button">언더클리어</button>
+              <button type="button">풋워크</button>
+              <button type="button">서브</button>
+              <button type="button">리시브</button>
+              <button type="button">네트플레이</button>
+              <button type="button">수비</button>
+              <button type="button">스텝</button>
+              <button type="button">체력</button>
+            </div>
+            <textarea name="practice" rows="3" placeholder="무엇을 연습했나요? 어떤 드릴을 했나요?"></textarea>
+          </div>
+
+          <div class="jr-grid">
+            <label class="jr-f">👍 잘된 점
+              <textarea name="went_well" rows="2" placeholder="오늘 잘 됐던 것"></textarea>
+            </label>
+            <label class="jr-f">🔧 보완할 점
+              <textarea name="to_improve" rows="2" placeholder="다음에 더 신경 쓸 것"></textarea>
+            </label>
+          </div>
+
+          <label class="jr-f">자유 메모
+            <textarea name="memo" rows="2" placeholder="컨디션, 부상, 느낀 점 등 자유롭게"></textarea>
+          </label>
+
+          <div class="jr-entry__actions">
+            <button type="button" class="btn btn--ghost" data-cancel-edit hidden>수정 취소</button>
+            <button type="submit" class="btn btn--primary btn--lg">저장하기</button>
+          </div>
+          <p id="jr-entry-msg" class="jr-msg"></p>
+        </form>
+
+        <section class="jr-list-sec">
+          <h2 class="jr-list__title">내 기록 <span id="jr-count" class="jr-count" hidden></span></h2>
+          <div id="jr-list" class="jr-list"></div>
+        </section>
+      </div>
+
+      <!-- 코치 화면 -->
+      <div id="jr-coach" hidden>
+        <header class="jr-head">
+          <div>
+            <span class="eyebrow">코치 대시보드</span>
+            <h1>회원 일지</h1>
+          </div>
+          <button class="btn btn--ghost" type="button" data-logout>로그아웃</button>
+        </header>
+
+        <div class="jr-stats">
+          <div class="jr-stat"><b id="jr-st-members">0</b><span>기록한 회원</span></div>
+          <div class="jr-stat"><b id="jr-st-entries">0</b><span>전체 일지</span></div>
+          <div class="jr-stat"><b id="jr-st-week">0</b><span>최근 7일</span></div>
+        </div>
+
+        <div class="jr-toolbar">
+          <label>회원 보기
+            <select id="jr-filter"><option value="">전체 회원</option></select>
+          </label>
+          <button class="btn btn--ghost" type="button" data-refresh>새로고침</button>
+        </div>
+
+        <div id="jr-coach-list" class="jr-list"></div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__top">
+        <div>
+          <span class="brand">REBOOT <b>BADMINTON</b></span>
+          <p>과학적이고 현대적인 메소드로 배우는 배드민턴.<br>남양주 레슨 전용 구장 리부트아카데미.</p>
+        </div>
+        <div>
+          <h4>바로가기</h4>
+          <ul class="footer__links">
+            <li><a href="about.html">아카데미 소개</a></li>
+            <li><a href="programs.html">프로그램</a></li>
+            <li><a href="coaches.html">코치진</a></li>
+            <li><a href="awards.html">대회 입상</a></li>
+            <li><a href="locations.html">오시는 길</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>상담</h4>
+          <ul class="footer__links">
+            <li><a href="contact.html">예약/상담 신청</a></li>
+            <li><a href="tel:010-3105-6212">010-3105-6212</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>© <span data-year>2026</span> 리부트아카데미. All rights reserved.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/js/journal-config.js?v=2"></script>
+  <script src="assets/js/journal.js?v=2" defer></script>
+  <script src="assets/js/main.js" defer></script>
+</body>
+</html>
