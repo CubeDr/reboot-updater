@@ -242,3 +242,70 @@
     });
   });
 })();
+
+/* ============================================================
+   리부트 — 전환 추적 + 모바일 신청 바  (2026-06-15 추가)
+   네이버 애널리틱스 전환 이벤트: wcs.cnv(전환유형, 전환가치)
+     · 유형 "2" = 신청/예약  (구글폼 신청 클릭)
+     · 유형 "5" = 기타        (전화상담 클릭)
+   기존 코드와 분리된 독립 블록 — 이 블록만 지우면 기능 전체 제거됨
+   ============================================================ */
+(function () {
+  'use strict';
+
+  var FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSfSpwJI0X2mglcA5OBDHLOo4MWuL3A45T1Gtzmyl-YgUFRKcw/viewform';
+  var TEL = '010-3105-6212';
+
+  /* --- 네이버 전환 이벤트 발사 --- */
+  function fireConv(type, value) {
+    try {
+      if (window.wcs && typeof wcs.cnv === 'function') {
+        if (!window._nasa) window._nasa = {};
+        window._nasa['cnv'] = wcs.cnv(String(type), String(value || '1'));
+        if (typeof wcs_do === 'function') { wcs_do(window._nasa); }
+      }
+    } catch (err) { /* 추적 실패해도 사용자 동작은 그대로 진행 */ }
+  }
+
+  /* --- 클릭 위임: 전화 / 구글폼 신청 링크 (아이콘 SVG 클릭 포함) --- */
+  document.addEventListener('click', function (e) {
+    var t = e.target;
+    var a = (t && t.closest) ? t.closest('a') : null;
+    if (!a) return;
+    var href = a.getAttribute('href') || '';
+    if (href.indexOf('tel:') === 0) {
+      fireConv('5', '1');                       // 전화상담
+    } else if (href.indexOf('docs.google.com/forms') !== -1) {
+      fireConv('2', '1');                       // 신청/예약(폼)
+    }
+  }, true);
+
+  /* --- 모바일 하단 고정 신청 바 (≤768px 에서만 노출) --- */
+  var BAR_CSS =
+    '.rb-cta{position:fixed;left:0;right:0;bottom:0;z-index:60;display:none;' +
+    'grid-template-columns:1fr 1fr;gap:8px;padding:10px 12px;background:#0f172a;' +
+    'box-shadow:0 -6px 20px rgba(0,0,0,.18);' +
+    'padding-bottom:calc(10px + env(safe-area-inset-bottom,0px))}' +
+    '.rb-cta a{display:flex;align-items:center;justify-content:center;gap:6px;height:50px;' +
+    'border-radius:12px;font-weight:800;font-size:1.02rem;text-decoration:none;letter-spacing:-.01em}' +
+    '.rb-cta__apply{background:var(--c-primary,#1d4ed8);color:#fff}' +
+    '.rb-cta__call{background:#fff;color:#0f172a}' +
+    '.rb-cta svg{width:19px;height:19px;flex:0 0 auto}' +
+    '@media (max-width:768px){.rb-cta{display:grid}body{padding-bottom:74px}}';
+
+  var style = document.createElement('style');
+  style.textContent = BAR_CSS;
+  document.head.appendChild(style);
+
+  var bar = document.createElement('div');
+  bar.className = 'rb-cta';
+  bar.setAttribute('aria-label', '빠른 신청');
+  bar.innerHTML =
+    '<a class="rb-cta__apply" href="' + FORM_URL + '" target="_blank" rel="noopener">' +
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7L9 18l-5-5"/></svg>무료 체험 신청</a>' +
+    '<a class="rb-cta__call" href="tel:' + TEL + '">' +
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>전화 문의</a>';
+
+  if (document.body) { document.body.appendChild(bar); }
+  else { document.addEventListener('DOMContentLoaded', function () { document.body.appendChild(bar); }); }
+})();
