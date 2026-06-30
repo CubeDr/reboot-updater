@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>갤러리 | 리부트아카데미</title>
+  <meta name="description" content="리부트아카데미와 안트로크가 코트 위에서 함께한 선수, 코치, 그리고 배드민턴 동료들." />
+  <link rel="icon" type="image/png" href="assets/img/favicon.png?v=1" />
+  <link rel="apple-touch-icon" href="assets/img/favicon.png?v=1" />
+  <link rel="stylesheet" href="assets/css/styles.css?v=2" />
+  <style>
+    .gallery-wrap { max-width: 1120px; margin: 0 auto; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: var(--sp-4); }
+    .g-card { background: #fff; border: 1px solid var(--c-border); border-radius: var(--r-md); overflow: hidden; box-shadow: var(--shadow-sm); transition: transform .25s var(--ease), box-shadow .25s var(--ease); margin: 0; }
+    .g-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+    .g-card__img { aspect-ratio: 4 / 5; overflow: hidden; background: var(--c-surface); }
+    .g-card__img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s var(--ease); }
+    .g-card:hover .g-card__img img { transform: scale(1.04); }
+    .g-card figcaption { padding: .7rem .8rem .85rem; font-size: .9rem; font-weight: 600; color: var(--c-fg-soft); text-align: center; line-height: 1.35; }
+    .gallery-soon { max-width: 1120px; margin: var(--sp-8) auto 0; text-align: center; padding: var(--sp-6); border: 1px dashed var(--c-border); border-radius: var(--r-md); color: var(--c-fg-muted); font-size: .95rem; background: var(--c-surface); }
+    @media (max-width: 560px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: var(--sp-3); } .g-card figcaption { font-size: .82rem; padding: .55rem .5rem .65rem; } }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">본문 바로가기</a>
+
+  <header class="nav" data-nav>
+    <div class="container nav__inner">
+      <a class="brand" href="index.html" aria-label="리부트 배드민턴 홈">
+        <span class="brand__mark" aria-hidden="true"><img src="assets/img/reboot-mark.png?v=2" alt="" style="height:38px;width:auto;display:block;position:relative;top:-3px" /></span>
+        <span class="brand__word">REBOOT<small>BADMINTON</small></span>
+      </a>
+      <nav class="nav__links" aria-label="주요 메뉴">
+        <a href="index.html">홈</a>
+        <a href="about.html">아카데미</a>
+        <a href="programs.html">프로그램</a>
+        <a href="coaches.html">코치진</a>
+        <a href="awards.html">대회 입상</a>
+        <a href="locations.html">오시는 길</a>
+        <a href="gallery.html" aria-current="page">갤러리</a>
+      </nav>
+      <div class="nav__cta">
+        <a class="btn btn--primary" href="contact.html">예약/상담 신청</a>
+        <button class="nav__toggle" data-nav-toggle aria-label="메뉴 열기" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page-hero">
+      <div class="container">
+        <p class="crumb"><a href="index.html">홈</a> &nbsp;/&nbsp; 갤러리</p>
+        <span class="eyebrow">Gallery</span>
+        <h1>함께한<br>사람들</h1>
+        <p class="lead">코트 위에서 함께 땀 흘린 선수와 코치, 그리고 배드민턴을 사랑하는 동료들. 리부트와 안트로크가 쌓아온 인연을 담았습니다.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="gallery-wrap">
+          <div class="gallery-grid">
+            <figure class="g-card reveal"><div class="g-card__img"><img src="assets/img/gallery/ppl-01.jpg" alt="국가대표 조건엽 선수" loading="lazy" /></div><figcaption>국가대표 조건엽 선수</figcaption></figure>
+            <figure class="g-card reveal"><div class="g-card__img"><img src="assets/img/gallery/ppl-02.jpg" alt="국가대표 박상용 선수" loading="lazy" /></div><figcaption>국가대표 박상용 선수</figcaption></figure>
+            <figure class="g-card reveal"><div class="g-card__img"><img src="assets/img/gallery/ppl-03.jpg" alt="요넥스 김태관 선수" loading="lazy" /></div><figcaption>요넥스 김태관 선수</figcaption></figure>
+            <figure class="g-card reveal"><div class="g-card__img"><img src="assets/img/gallery/ppl-04.jpg" alt="요넥스 이경근 선수" loading="lazy" /></div><figcaption>요넥스 이경근 선수</figcaption></figure>
+            <figure class="g-card reveal"><div class="g-card__img"><img src="assets/img/gallery/ppl-05.jpg" alt="고양시청 김건국 선수" loading="lazy" /></div><figcaption>고양시청 김건국 선수</figcaption></figure>
+            <figure class="g-card reveal"><div class="g-card__img"><img src="assets/img/gallery/ppl-06.jpg" alt="길원초 김환희 선수" loading="lazy" /></div><figcaption>길원초 김환희 선수</figcaption></figure>
+            <figure class="g-card reveal"><div class="g-card__img"><img src="assets/img/gallery/ppl-08.jpg" alt="고양 스타필드 시합" loading="lazy" /></div><figcaption>고양 스타필드 시합</figcaption></figure>
+            <figure class="g-card reveal"><div class="g-card__img"><img src="assets/img/gallery/ppl-09.jpg" alt="동탄요넥스 홍승인 사장" loading="lazy" /></div><figcaption>동탄요넥스 홍승인 사장</figcaption></figure>
+            <figure class="g-card reveal"><div class="g-card__img"><img src="assets/img/gallery/ppl-10.jpg" alt="디엔에이 최장혁 대표" loading="lazy" /></div><figcaption>디엔에이 최장혁 대표</figcaption></figure>
+            <figure class="g-card reveal"><div class="g-card__img"><img src="assets/img/gallery/ppl-11.jpg" alt="베트남 국가대표 코치" loading="lazy" /></div><figcaption>베트남 국가대표 코치</figcaption></figure>
+            <figure class="g-card reveal"><div class="g-card__img"><img src="assets/img/gallery/ppl-12.jpg" alt="문쌤재활 문교훈 님" loading="lazy" /></div><figcaption>문쌤재활 문교훈 님</figcaption></figure>
+            <figure class="g-card reveal"><div class="g-card__img"><img src="assets/img/gallery/ppl-13.jpg" alt="비트펠라하우스 헬켓" loading="lazy" /></div><figcaption>비트펠라하우스 헬켓</figcaption></figure>
+            <figure class="g-card reveal"><div class="g-card__img"><img src="assets/img/gallery/ppl-14.jpg" alt="안진욱 코치" loading="lazy" /></div><figcaption>안진욱 코치</figcaption></figure>
+            <figure class="g-card reveal"><div class="g-card__img"><img src="assets/img/gallery/ppl-15.jpg" alt="김태환 코치" loading="lazy" /></div><figcaption>김태환 코치</figcaption></figure>
+            <figure class="g-card reveal"><div class="g-card__img"><img src="assets/img/gallery/ppl-16.jpg" alt="너목보 한만청 코치" loading="lazy" /></div><figcaption>너목보 한만청 코치</figcaption></figure>
+            <figure class="g-card reveal"><div class="g-card__img"><img src="assets/img/gallery/ppl-17.jpg" alt="불꽃남자 권도윤 코치" loading="lazy" /></div><figcaption>불꽃남자 권도윤 코치</figcaption></figure>
+            <figure class="g-card reveal"><div class="g-card__img"><img src="assets/img/gallery/ppl-18.jpg" alt="윤이콕 윤주영 코치" loading="lazy" /></div><figcaption>윤이콕 윤주영 코치</figcaption></figure>
+            <figure class="g-card reveal"><div class="g-card__img"><img src="assets/img/gallery/ppl-19.jpg" alt="변두리콕 신유철 님" loading="lazy" /></div><figcaption>변두리콕 신유철 님</figcaption></figure>
+            <figure class="g-card reveal"><div class="g-card__img"><img src="assets/img/gallery/ppl-20.jpg" alt="얼미부부 김한얼 님" loading="lazy" /></div><figcaption>얼미부부 김한얼 님</figcaption></figure>
+            <figure class="g-card reveal"><div class="g-card__img"><img src="assets/img/gallery/ppl-21.jpg" alt="푸바오 박경민 코치" loading="lazy" /></div><figcaption>푸바오 박경민 코치</figcaption></figure>
+            <figure class="g-card reveal"><div class="g-card__img"><img src="assets/img/gallery/ppl-22.jpg" alt="김대래 코치" loading="lazy" /></div><figcaption>김대래 코치</figcaption></figure>
+            <figure class="g-card reveal"><div class="g-card__img"><img src="assets/img/gallery/ppl-23.jpg" alt="김동욱 코치" loading="lazy" /></div><figcaption>김동욱 코치</figcaption></figure>
+            <figure class="g-card reveal"><div class="g-card__img"><img src="assets/img/gallery/ppl-24.jpg" alt="김성효 코치" loading="lazy" /></div><figcaption>김성효 코치</figcaption></figure>
+            <figure class="g-card reveal"><div class="g-card__img"><img src="assets/img/gallery/ppl-25.jpg" alt="김용지 코치" loading="lazy" /></div><figcaption>김용지 코치</figcaption></figure>
+            <figure class="g-card reveal"><div class="g-card__img"><img src="assets/img/gallery/ppl-26.jpg" alt="김재영 코치" loading="lazy" /></div><figcaption>김재영 코치</figcaption></figure>
+            <figure class="g-card reveal"><div class="g-card__img"><img src="assets/img/gallery/ppl-28.jpg" alt="남양주 엄정현 코치" loading="lazy" /></div><figcaption>남양주 엄정현 코치</figcaption></figure>
+            <figure class="g-card reveal"><div class="g-card__img"><img src="assets/img/gallery/ppl-29.jpg" alt="박지수 코치" loading="lazy" /></div><figcaption>박지수 코치</figcaption></figure>
+            <figure class="g-card reveal"><div class="g-card__img"><img src="assets/img/gallery/ppl-30.jpg" alt="안채현 코치" loading="lazy" /></div><figcaption>안채현 코치</figcaption></figure>
+            <figure class="g-card reveal"><div class="g-card__img"><img src="assets/img/gallery/ppl-31.jpg" alt="원현호 코치" loading="lazy" /></div><figcaption>원현호 코치</figcaption></figure>
+            <figure class="g-card reveal"><div class="g-card__img"><img src="assets/img/gallery/ppl-32.jpg" alt="유현진 코치" loading="lazy" /></div><figcaption>유현진 코치</figcaption></figure>
+            <figure class="g-card reveal"><div class="g-card__img"><img src="assets/img/gallery/ppl-33.jpg" alt="이상현 코치" loading="lazy" /></div><figcaption>이상현 코치</figcaption></figure>
+            <figure class="g-card reveal"><div class="g-card__img"><img src="assets/img/gallery/ppl-34.jpg" alt="이정은 코치" loading="lazy" /></div><figcaption>이정은 코치</figcaption></figure>
+            <figure class="g-card reveal"><div class="g-card__img"><img src="assets/img/gallery/ppl-35.jpg" alt="이창현 코치" loading="lazy" /></div><figcaption>이창현 코치</figcaption></figure>
+            <figure class="g-card reveal"><div class="g-card__img"><img src="assets/img/gallery/ppl-36.jpg" alt="최민기 코치" loading="lazy" /></div><figcaption>최민기 코치</figcaption></figure>
+            <figure class="g-card reveal"><div class="g-card__img"><img src="assets/img/gallery/ppl-37.jpg" alt="최승연 코치" loading="lazy" /></div><figcaption>최승연 코치</figcaption></figure>
+            <figure class="g-card reveal"><div class="g-card__img"><img src="assets/img/gallery/ppl-38.jpg" alt="최진호 코치" loading="lazy" /></div><figcaption>최진호 코치</figcaption></figure>
+            <figure class="g-card reveal"><div class="g-card__img"><img src="assets/img/gallery/ppl-39.jpg" alt="최현호 코치" loading="lazy" /></div><figcaption>최현호 코치</figcaption></figure>
+            <figure class="g-card reveal"><div class="g-card__img"><img src="assets/img/gallery/ppl-40.jpg" alt="허동녕 코치" loading="lazy" /></div><figcaption>허동녕 코치</figcaption></figure>
+          </div>
+          <div class="gallery-soon reveal">🏸 레슨 현장 사진은 곧 추가됩니다.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--ink cta-band">
+      <div class="container cta-band__inner">
+        <div>
+          <h2>다음 한 장은<br>당신의 차례입니다</h2>
+          <p>리부트의 코트에서 함께 성장할 분을 기다립니다. 일단 체험부터 시작해보세요.</p>
+        </div>
+        <a class="btn btn--light btn--lg" href="contact.html">예약/상담 신청하기</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__top">
+        <div><span class="brand">REBOOT <b>BADMINTON</b></span><p>과학적이고 현대적인 메소드로 배우는 배드민턴.<br>남양주 레슨 전용 구장 리부트아카데미.</p></div>
+        <div><h4>바로가기</h4><ul class="footer__links"><li><a href="about.html">아카데미 소개</a></li><li><a href="programs.html">프로그램</a></li><li><a href="coaches.html">코치진</a></li><li><a href="awards.html">대회 입상</a></li><li><a href="locations.html">오시는 길</a></li></ul></div>
+        <div><h4>상담</h4><ul class="footer__links"><li><a href="contact.html">예약/상담 신청</a></li><li><a href="tel:010-3105-6212">010-3105-6212</a></li><li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfSpwJI0X2mglcA5OBDHLOo4MWuL3A45T1Gtzmyl-YgUFRKcw/viewform" target="_blank" rel="noopener">온라인 신청서</a></li></ul></div>
+      </div>
+      <div class="footer__bottom">
+        <span>© <span data-year>2026</span> 리부트아카데미. All rights reserved.</span>
+        <div class="social">
+          <a href="https://www.youtube.com/@An_troke" target="_blank" rel="noopener" aria-label="유튜브 안트로크 채널"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23 12s0-3.5-.45-5.18a2.78 2.78 0 00-1.95-1.96C18.88 4.4 12 4.4 12 4.4s-6.88 0-8.6.46A2.78 2.78 0 001.45 6.82C1 8.5 1 12 1 12s0 3.5.45 5.18a2.78 2.78 0 001.95 1.96c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 001.95-1.96C23 15.5 23 12 23 12zM9.75 15.5v-7l6 3.5-6 3.5z"/></svg></a>
+          <a href="https://www.instagram.com/reboot.badminton_official/" target="_blank" rel="noopener" aria-label="인스타그램"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js?v=3" defer></script>
+  <!-- 네이버 애널리틱스 -->
+  <script type="text/javascript" src="//wcs.pstatic.net/wcslog.js"></script>
+  <script type="text/javascript">
+  if(!wcs_add) var wcs_add = {};
+  wcs_add["wa"] = "1a880685034e340";
+  if(window.wcs) { wcs_do(); }
+  </script>
+</body>
+</html>
