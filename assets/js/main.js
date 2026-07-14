@@ -328,3 +328,109 @@
     });
   });
 })();
+
+/* ===== 공유 위젯 (모든 페이지 공통, 우하단 플로팅 버튼) ===== */
+(function () {
+  var css = ''
+    + '.share-fab{position:fixed;right:18px;bottom:18px;z-index:9000;width:52px;height:52px;border-radius:50%;'
+    + 'background:var(--c-primary,#1d4ed8);color:#fff;border:0;cursor:pointer;box-shadow:0 8px 24px rgba(29,78,216,.35);'
+    + 'display:grid;place-items:center;transition:transform .15s}'
+    + '.share-fab:hover{transform:scale(1.08)}'
+    + '.share-fab svg{width:22px;height:22px}'
+    + '.share-panel{position:fixed;right:18px;bottom:80px;z-index:9000;background:#fff;border:1px solid #e2e8f0;'
+    + 'border-radius:14px;box-shadow:0 16px 40px rgba(15,23,42,.18);padding:8px;display:none;min-width:190px}'
+    + '.share-panel.open{display:block}'
+    + '.share-item{display:flex;align-items:center;gap:10px;width:100%;padding:11px 12px;border:0;background:none;'
+    + 'border-radius:9px;font-size:14px;cursor:pointer;color:#0f172a;text-align:left;text-decoration:none}'
+    + '.share-item:hover{background:#eff6ff}'
+    + '.share-item .si{font-size:17px;width:22px;text-align:center}'
+    + '.share-toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);z-index:9100;background:#0f172a;'
+    + 'color:#fff;font-size:13px;padding:10px 18px;border-radius:100px;opacity:0;transition:opacity .25s;pointer-events:none}'
+    + '.share-toast.on{opacity:1}';
+  var st = document.createElement('style');
+  st.textContent = css;
+  document.head.appendChild(st);
+
+  var fab = document.createElement('button');
+  fab.className = 'share-fab';
+  fab.setAttribute('aria-label', '이 페이지 공유하기');
+  fab.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>';
+
+  var panel = document.createElement('div');
+  panel.className = 'share-panel';
+
+  var toast = document.createElement('div');
+  toast.className = 'share-toast';
+
+  function pageUrl() { return location.href.split('#')[0]; }
+  function pageTitle() { return document.title || '리부트아카데미'; }
+
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('on');
+    setTimeout(function () { toast.classList.remove('on'); }, 1800);
+  }
+
+  function copyLink() {
+    var url = pageUrl();
+    function ok() { showToast('링크가 복사되었습니다! 붙여넣기로 공유하세요'); panel.classList.remove('open'); }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(ok, function () { legacy(); });
+    } else { legacy(); }
+    function legacy() {
+      var ta = document.createElement('textarea');
+      ta.value = url; document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); ok(); } catch (e) { showToast('복사 실패 - 주소창에서 직접 복사해 주세요'); }
+      document.body.removeChild(ta);
+    }
+  }
+
+  function nativeShare() {
+    if (navigator.share) {
+      navigator.share({ title: pageTitle(), url: pageUrl() }).catch(function () {});
+      panel.classList.remove('open');
+    } else { copyLink(); }
+  }
+
+  var items = [
+    { icon: '🔗', label: '링크 복사', fn: copyLink },
+    { icon: '📱', label: '공유하기 (카톡·문자 등)', fn: nativeShare },
+    { icon: '🟢', label: '네이버 밴드로 공유', href: function () {
+        return 'https://band.us/plugin/share?body=' + encodeURIComponent(pageTitle() + '\n' + pageUrl())
+          + '&route=' + encodeURIComponent(pageUrl()); } },
+    { icon: '📘', label: '페이스북으로 공유', href: function () {
+        return 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(pageUrl()); } }
+  ];
+  items.forEach(function (it) {
+    var el;
+    if (it.fn) {
+      el = document.createElement('button');
+      el.type = 'button';
+      el.addEventListener('click', it.fn);
+    } else {
+      el = document.createElement('a');
+      el.target = '_blank';
+      el.rel = 'noopener';
+      el.addEventListener('click', function () {
+        el.href = it.href();
+        panel.classList.remove('open');
+      });
+      el.href = '#';
+    }
+    el.className = 'share-item';
+    el.innerHTML = '<span class="si">' + it.icon + '</span><span>' + it.label + '</span>';
+    panel.appendChild(el);
+  });
+
+  fab.addEventListener('click', function (e) {
+    e.stopPropagation();
+    panel.classList.toggle('open');
+  });
+  document.addEventListener('click', function (e) {
+    if (!panel.contains(e.target) && e.target !== fab) panel.classList.remove('open');
+  });
+
+  document.body.appendChild(fab);
+  document.body.appendChild(panel);
+  document.body.appendChild(toast);
+})();
