@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>공지사항 | 리부트아카데미</title>
+  <meta name="description" content="리부트아카데미의 새로운 소식 — 이벤트, 해외 아카데미 교류, 대회 정보, 레슨 안내를 확인하세요." />
+  <link rel="icon" type="image/png" href="assets/img/favicon.png?v=1" />
+  <link rel="apple-touch-icon" href="assets/img/favicon.png?v=1" />
+  <link rel="stylesheet" href="assets/css/styles.css?v=2" />
+  <style>
+    /* ── 공지사항 전용 스타일 ── */
+    .notice-tabs { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-bottom: var(--sp-8); }
+    .notice-tab {
+      border: 1px solid var(--c-border); background: #fff; color: var(--c-fg-soft);
+      border-radius: var(--r-pill); padding: .5rem 1.15rem; font-weight: 600; font-size: .92rem;
+      transition: all var(--dur) var(--ease);
+    }
+    .notice-tab:hover { border-color: var(--c-primary); color: var(--c-primary); }
+    .notice-tab.active { background: var(--c-primary); border-color: var(--c-primary); color: #fff; }
+
+    .notice-item {
+      background: #fff; border: 1px solid var(--c-border); border-radius: var(--r-md);
+      margin-bottom: var(--sp-3); overflow: hidden; transition: box-shadow var(--dur) var(--ease);
+    }
+    .notice-item:hover { box-shadow: var(--shadow-md); }
+    .notice-item--pinned { border: 1.5px solid var(--c-primary); background: var(--c-primary-soft); }
+    .notice-item__head {
+      display: flex; align-items: center; gap: .7rem;
+      padding: 1.05rem 1.25rem; cursor: pointer; user-select: none;
+      background: none; border: none; width: 100%; text-align: left; font: inherit; color: inherit;
+    }
+    .notice-cat {
+      flex: none; font-family: var(--font-display); font-weight: 700; font-size: .78rem;
+      letter-spacing: .04em; border-radius: 6px; padding: .18rem .6rem; white-space: nowrap;
+    }
+    .notice-cat--안내     { background: var(--c-primary-soft); color: var(--c-primary-strong); }
+    .notice-item--pinned .notice-cat--안내 { background: #dbe7ff; }
+    .notice-cat--이벤트   { background: #fdeef0; color: #be3a53; }
+    .notice-cat--해외교류 { background: #e6f7f1; color: #128a68; }
+    .notice-cat--시합정보 { background: #fff4e0; color: #b3750e; }
+    .notice-cat--칼럼     { background: #f1ecfb; color: #6d4fc1; }
+    .notice-item__title {
+      flex: 1; min-width: 0; font-weight: 600; font-size: 1rem;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .notice-pin { flex: none; color: var(--c-primary); }
+    .notice-pin svg { width: 15px; height: 15px; }
+    .notice-new { flex: none; color: var(--c-danger); font-weight: 800; font-size: .72rem; }
+    .notice-item__date { flex: none; color: var(--c-fg-muted); font-size: .85rem; font-variant-numeric: tabular-nums; }
+    .notice-item__arrow { flex: none; color: var(--c-border-strong); transition: transform var(--dur) var(--ease); }
+    .notice-item__arrow svg { width: 16px; height: 16px; }
+    .notice-item.open .notice-item__arrow { transform: rotate(180deg); }
+    .notice-item__body {
+      display: none; margin: 0 1.25rem; padding: 1rem 0 1.3rem;
+      border-top: 1px dashed var(--c-border-strong);
+      color: var(--c-fg-soft); font-size: .95rem; white-space: pre-line;
+    }
+    .notice-item.open .notice-item__body { display: block; }
+    .notice-empty { text-align: center; color: var(--c-fg-muted); padding: var(--sp-16) 0; }
+    @media (max-width: 560px) {
+      .notice-item__date { display: none; }
+      .notice-item__head { padding: .95rem 1rem; }
+      .notice-item__body { margin: 0 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">본문 바로가기</a>
+
+  <header class="nav" data-nav>
+    <div class="container nav__inner">
+      <a class="brand" href="index.html" aria-label="리부트 배드민턴 홈">
+        <span class="brand__mark" aria-hidden="true"><img src="assets/img/reboot-mark.png?v=2" alt="" style="height:38px;width:auto;display:block;position:relative;top:-3px" /></span>
+        <span class="brand__word">REBOOT<small>BADMINTON</small></span>
+      </a>
+      <nav class="nav__links" aria-label="주요 메뉴">
+        <a href="index.html">홈</a>
+        <a href="about.html">아카데미</a>
+        <a href="programs.html">프로그램</a>
+        <a href="coaches.html">코치진</a>
+        <a href="awards.html">대회 입상</a>
+        <a href="locations.html">오시는 길</a>
+        <a href="gallery.html">갤러리</a>
+        <a href="notice.html" aria-current="page">공지사항</a>
+      </nav>
+      <div class="nav__cta">
+        <a class="btn btn--primary" href="contact.html">예약/상담 신청</a>
+        <button class="nav__toggle" data-nav-toggle aria-label="메뉴 열기" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page-hero">
+      <div class="container">
+        <p class="crumb"><a href="index.html">홈</a> &nbsp;/&nbsp; 공지사항</p>
+        <span class="eyebrow">Notice</span>
+        <h1>리부트의<br>새로운 소식</h1>
+        <p class="lead">이벤트, 해외 아카데미 교류, 대회 정보, 레슨 안내까지 — 리부트아카데미의 소식을 가장 먼저 확인하세요.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="notice-tabs" id="noticeTabs" role="tablist" aria-label="공지 카테고리"></div>
+        <div id="noticeList"></div>
+      </div>
+    </section>
+
+    <section class="section section--ink cta-band">
+      <div class="container cta-band__inner">
+        <div>
+          <h2>궁금한 점이 있으신가요?</h2>
+          <p>공지 내용이나 레슨에 대해 궁금한 점은<br>언제든 편하게 문의해 주세요.</p>
+        </div>
+        <a class="btn btn--light btn--lg" href="contact.html">예약/상담 신청하기</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__top">
+        <div><span class="brand">REBOOT <b>BADMINTON</b></span><p>과학적이고 현대적인 메소드로 배우는 배드민턴.<br>남양주 레슨 전용 구장 리부트아카데미.</p></div>
+        <div><h4>바로가기</h4><ul class="footer__links"><li><a href="about.html">아카데미 소개</a></li><li><a href="programs.html">프로그램</a></li><li><a href="coaches.html">코치진</a></li><li><a href="awards.html">대회 입상</a></li><li><a href="notice.html">공지사항</a></li><li><a href="locations.html">오시는 길</a></li></ul></div>
+        <div><h4>상담</h4><ul class="footer__links"><li><a href="contact.html">예약/상담 신청</a></li><li><a href="tel:010-3105-6212">010-3105-6212</a></li><li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfSpwJI0X2mglcA5OBDHLOo4MWuL3A45T1Gtzmyl-YgUFRKcw/viewform" target="_blank" rel="noopener">온라인 신청서</a></li></ul></div>
+      </div>
+      <div class="footer__bottom">
+        <span>© <span data-year>2026</span> 리부트아카데미. All rights reserved.</span>
+        <div class="social">
+          <a href="https://www.youtube.com/@An_troke" target="_blank" rel="noopener" aria-label="유튜브 안트로크 채널"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23 12s0-3.5-.45-5.18a2.78 2.78 0 00-1.95-1.96C18.88 4.4 12 4.4 12 4.4s-6.88 0-8.6.46A2.78 2.78 0 001.45 6.82C1 8.5 1 12 1 12s0 3.5.45 5.18a2.78 2.78 0 001.95 1.96c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 001.95-1.96C23 15.5 23 12 23 12zM9.75 15.5v-7l6 3.5-6 3.5z"/></svg></a>
+          <a href="https://www.instagram.com/reboot.badminton_official/" target="_blank" rel="noopener" aria-label="인스타그램"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+  /* ═══════════════════════════════════════════════════════════════
+     ★ 공지 추가하는 방법 ★
+     아래 NOTICES 목록 맨 위에 아래 형식을 복사해서 붙여넣으면 끝!
+
+     {
+       category: "안내",            ← "안내" / "이벤트" / "해외교류" / "시합정보" / "칼럼" 중 하나
+       title: "제목을 쓰세요",
+       date: "2026-08-01",          ← 날짜 (연-월-일)
+       pinned: true,                ← 상단 고정하려면 true, 아니면 이 줄을 지우세요
+       body: `내용을 쓰세요.
+  줄바꿈도 그대로 표시됩니다.`
+     },
+
+     ※ 최근 7일 이내 글에는 N(NEW) 표시가 자동으로 붙습니다.
+     ※ 저장 후 파일을 사이트에 다시 업로드하면 반영됩니다.
+  ═══════════════════════════════════════════════════════════════ */
+  const NOTICES = [
+    {
+      category: "이벤트",
+      title: "8월 15일 리부트 자체대회 개최 안내",
+      date: "2026-08-01",
+      pinned: true,
+      body: `리부트아카데미 회원님들을 위한 자체대회를 개최합니다!
+
+· 일시 : 2026년 8월 15일 (토)
+· 대상 : 리부트아카데미 회원 누구나
+· 수준별 조 편성으로 초보자도 부담 없이 참가 가능
+
+그동안 갈고닦은 실력을 코트에서 마음껏 펼쳐보세요.
+참가 신청은 데스크 또는 담당 코치에게 해주시면 됩니다. 많은 참여 바랍니다!`
+    },
+    {
+      category: "해외교류",
+      title: "일본 배드민턴 아카데미 교류 방문 예정",
+      date: "2026-07-28",
+      body: `리부트아카데미에서 일본 현지 배드민턴 아카데미 교류 방문을 준비하고 있습니다.
+
+일본 아카데미의 훈련 방식과 지도 시스템을 직접 보고 배워서, 좋은 인사이트는 리부트아카데미 레슨에 그대로 적용할 예정입니다.
+
+· 현지 아카데미 방문 및 합동 훈련 참관
+· 훈련 메소드 · 유소년 육성 시스템 벤치마킹
+· 다녀온 후 배운 내용을 공지사항과 칼럼으로 공유 예정
+
+더 좋은 레슨으로 돌아오겠습니다. 기대해 주세요!`
+    },
+    {
+      category: "시합정보",
+      title: "하반기 국내·해외 주요 배드민턴 대회 일정 안내",
+      date: "2026-07-25",
+      body: `하반기 참가 가능한 주요 대회 일정을 안내드립니다.
+
+· 전국 생활체육 배드민턴 대회 (일정 추후 공지)
+· 해외 오픈 대회 참가 희망자는 담당 코치에게 개별 문의
+
+아카데미 차원에서 단체 참가를 준비 중이니, 출전을 희망하시는 분은 데스크 또는 담당 코치에게 신청해 주세요. 대회 준비반 회원님들의 많은 참여 바랍니다.`
+    },
+    {
+      category: "칼럼",
+      title: "[코치 칼럼] 스윙이 극적으로 변하는 순간에 대하여",
+      date: "2026-07-15",
+      body: `레슨을 하다 보면 회원님들의 스윙이 갑자기 좋아지는 순간이 있습니다.
+
+기술을 백 번 설명하는 것보다, 몸이 그 감각을 한 번 느끼는 것이 훨씬 중요하다는 걸 매번 느낍니다. 직선 스윙도, 키네틱 체인도 결국 그 '한 번의 감각'을 만들기 위한 과정입니다.
+
+앞으로 이 공간에 배드민턴에 대한 생각들을 종종 적어보려 합니다. 편하게 읽어주세요.`
+    }
+  ];
+
+  /* ── 아래는 건드릴 필요 없는 코드입니다 ── */
+  const CATEGORIES = ["전체", "안내", "이벤트", "해외교류", "시합정보", "칼럼"];
+  const NEW_DAYS = 7;
+  let currentTab = "전체";
+
+  const pinSvg = '<svg viewBox="0 0 24 24" fill="currentColor" aria-label="고정된 공지"><path d="M16 3l5 5-5.5 1.5L13 16l-2.5-2.5L5 19l-1-1 5.5-5.5L7 10l6.5-2.5z"/></svg>';
+  const arrowSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
+
+  function isNew(dateStr) {
+    const diff = (Date.now() - new Date(dateStr).getTime()) / 86400000;
+    return diff >= 0 && diff <= NEW_DAYS;
+  }
+
+  function renderTabs() {
+    document.getElementById("noticeTabs").innerHTML = CATEGORIES.map(c =>
+      `<button class="notice-tab${c === currentTab ? " active" : ""}" onclick="setNoticeTab('${c}')">${c}</button>`
+    ).join("");
+  }
+
+  function setNoticeTab(c) {
+    currentTab = c;
+    renderTabs();
+    renderList();
+  }
+
+  function renderList() {
+    const el = document.getElementById("noticeList");
+    let items = NOTICES.filter(n => currentTab === "전체" || n.category === currentTab);
+    items = items.slice().sort((a, b) => (!!b.pinned - !!a.pinned) || (new Date(b.date) - new Date(a.date)));
+    if (!items.length) {
+      el.innerHTML = `<p class="notice-empty">등록된 글이 없습니다.</p>`;
+      return;
+    }
+    el.innerHTML = items.map((n, i) => `
+      <article class="notice-item${n.pinned ? " notice-item--pinned" : ""}" id="notice-${i}">
+        <button class="notice-item__head" onclick="toggleNotice(${i})" aria-expanded="false">
+          ${n.pinned ? `<span class="notice-pin">${pinSvg}</span>` : ""}
+          <span class="notice-cat notice-cat--${n.category}">${n.category}</span>
+          <span class="notice-item__title">${n.title}</span>
+          ${isNew(n.date) ? `<span class="notice-new">N</span>` : ""}
+          <span class="notice-item__date">${n.date}</span>
+          <span class="notice-item__arrow">${arrowSvg}</span>
+        </button>
+        <div class="notice-item__body">${n.body}</div>
+      </article>
+    `).join("");
+  }
+
+  function toggleNotice(i) {
+    const item = document.getElementById("notice-" + i);
+    item.classList.toggle("open");
+    item.querySelector(".notice-item__head").setAttribute("aria-expanded", item.classList.contains("open"));
+  }
+
+  renderTabs();
+  renderList();
+  </script>
+
+  <script src="assets/js/main.js?v=4" defer></script>
+  <!-- 네이버 애널리틱스 -->
+  <script type="text/javascript" src="//wcs.pstatic.net/wcslog.js"></script>
+  <script type="text/javascript">
+  if(!wcs_add) var wcs_add = {};
+  wcs_add["wa"] = "1a880685034e340";
+  if(window.wcs) { wcs_do(); }
+  </script>
+</body>
+</html>
