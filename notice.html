@@ -48,6 +48,9 @@
     .notice-pin svg { width: 15px; height: 15px; }
     .notice-new { flex: none; color: var(--c-danger); font-weight: 800; font-size: .72rem; }
     .notice-item__date { flex: none; color: var(--c-fg-muted); font-size: .85rem; font-variant-numeric: tabular-nums; }
+    .notice-item__views { flex: none; display: inline-flex; align-items: center; gap: .28rem; color: var(--c-fg-muted); font-size: .82rem; font-variant-numeric: tabular-nums; }
+    .notice-item__views svg { width: 15px; height: 15px; }
+    .notice-item__views[hidden] { display: none; }
     .notice-item__arrow { flex: none; color: var(--c-border-strong); transition: transform var(--dur) var(--ease); }
     .notice-item__arrow svg { width: 16px; height: 16px; }
     .notice-item.open .notice-item__arrow { transform: rotate(180deg); }
@@ -211,6 +214,53 @@
   let currentTab = "전체";
 
   const pinSvg = '<svg viewBox="0 0 24 24" fill="currentColor" aria-label="고정된 공지"><path d="M16 3l5 5-5.5 1.5L13 16l-2.5-2.5L5 19l-1-1 5.5-5.5L7 10l6.5-2.5z"/></svg>';
+  const eyeSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="조회수"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>';
+
+  /* ── 조회수 (counterapi.dev 무료 카운터) ──
+     방문자가 글을 펼치면 조용히 집계만 되고, 화면에는 표시되지 않습니다.
+     ★ 조회수 확인은 나만 아는 주소로:  notice.html?rbstats  ★
+     (예: https://reboot-badminton.com/notice.html?rbstats)
+     글마다 제목+날짜로 고유 키를 만들어 집계합니다.
+     제목이나 날짜를 수정하면 조회수가 0부터 다시 시작되니,
+     수정해도 조회수를 유지하고 싶으면 글에 id: "원하는영문이름" 을 추가하세요. */
+  const COUNTER_NS = "reboot-badminton-notice";
+  const STATS_MODE = new URLSearchParams(location.search).has("rbstats");
+  function noticeKey(n) {
+    if (n.id) return n.id.replace(/[^a-zA-Z0-9_-]/g, "");
+    let h = 5381;
+    const s = n.date + "|" + n.title;
+    for (let i = 0; i < s.length; i++) h = ((h * 33) ^ s.charCodeAt(i)) >>> 0;
+    return "n" + h.toString(16);
+  }
+
+  const countCache = {};
+  function showCount(key, count) {
+    countCache[key] = count;
+    document.querySelectorAll(`[data-views="${key}"]`).forEach(el => {
+      el.querySelector("[data-views-num]").textContent = count.toLocaleString("ko-KR");
+      el.hidden = false;
+    });
+  }
+
+  function loadCounts() {
+    if (!STATS_MODE) return; /* 통계 모드에서만 조회수를 불러와 표시 */
+    const keys = [...new Set(NOTICES.map(noticeKey))];
+    keys.forEach(key => {
+      fetch(`https://api.counterapi.dev/v1/${COUNTER_NS}/${key}`)
+        .then(r => r.ok ? r.json() : { count: 0 })
+        .then(d => showCount(key, d.count || 0))
+        .catch(() => {}); /* 카운터 서버 문제 시 조회수만 조용히 숨김 */
+    });
+  }
+
+  function countView(key) {
+    if (STATS_MODE) return; /* 내가 통계 확인할 때는 집계하지 않음 */
+    const seenKey = "notice-seen-" + key;
+    try { if (localStorage.getItem(seenKey)) return; } catch (e) {}
+    fetch(`https://api.counterapi.dev/v1/${COUNTER_NS}/${key}/up`)
+      .then(r => { if (r.ok) { try { localStorage.setItem(seenKey, "1"); } catch (e) {} } })
+      .catch(() => {});
+  }
   const arrowSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
 
   function isNew(dateStr) {
@@ -245,22 +295,30 @@
           <span class="notice-cat notice-cat--${n.category}">${n.category}</span>
           <span class="notice-item__title">${n.title}</span>
           ${isNew(n.date) ? `<span class="notice-new">N</span>` : ""}
+          ${STATS_MODE ? `<span class="notice-item__views" data-views="${noticeKey(n)}" hidden>${eyeSvg}<span data-views-num></span></span>` : ""}
           <span class="notice-item__date">${n.date}</span>
           <span class="notice-item__arrow">${arrowSvg}</span>
         </button>
         <div class="notice-item__body">${n.body}</div>
       </article>
     `).join("");
+    Object.keys(countCache).forEach(key => showCount(key, countCache[key]));
   }
 
   function toggleNotice(i) {
     const item = document.getElementById("notice-" + i);
     item.classList.toggle("open");
-    item.querySelector(".notice-item__head").setAttribute("aria-expanded", item.classList.contains("open"));
+    const opened = item.classList.contains("open");
+    item.querySelector(".notice-item__head").setAttribute("aria-expanded", opened);
+    if (opened) {
+      const viewsEl = item.querySelector("[data-views]");
+      if (viewsEl) countView(viewsEl.getAttribute("data-views"));
+    }
   }
 
   renderTabs();
   renderList();
+  loadCounts();
   </script>
 
   <script src="assets/js/main.js?v=4" defer></script>
