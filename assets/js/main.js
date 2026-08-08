@@ -20,6 +20,37 @@
     });
   }
 
+  /* ---------- 상단 메뉴 드롭다운 (클릭 · 키보드) ---------- */
+  var groups = document.querySelectorAll('.nav__group');
+  function closeGroups(except) {
+    groups.forEach(function (g) {
+      if (g === except) return;
+      g.setAttribute('data-open', 'false');
+      var b = g.querySelector('.nav__grouptop');
+      if (b) b.setAttribute('aria-expanded', 'false');
+    });
+  }
+  groups.forEach(function (g) {
+    var btn = g.querySelector('.nav__grouptop');
+    if (!btn) return;
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      var open = g.getAttribute('data-open') === 'true';
+      closeGroups(g);
+      g.setAttribute('data-open', String(!open));
+      btn.setAttribute('aria-expanded', String(!open));
+    });
+  });
+  if (groups.length) {
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest('.nav__group')) closeGroups(null);
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeGroups(null);
+    });
+  }
+
   /* ---------- 스크롤 등장 애니메이션 ---------- */
   var reveals = document.querySelectorAll('.reveal');
   if ('IntersectionObserver' in window && reveals.length) {

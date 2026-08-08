@@ -79,14 +79,25 @@
       </a>
       <nav class="nav__links" aria-label="주요 메뉴">
         <a href="index.html">홈</a>
-        <a href="about.html">아카데미</a>
+        <span class="nav__group">
+          <button class="nav__grouptop" type="button" aria-expanded="false">아카데미 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+          <span class="nav__menu">
+            <a href="about.html">아카데미 소개</a>
+            <a href="coaches.html">코치진</a>
+            <a href="gallery.html">갤러리</a>
+            <a href="locations.html">오시는 길</a>
+          </span>
+        </span>
         <a href="programs.html">프로그램</a>
-        <a href="coaches.html">코치진</a>
-        <a href="awards.html">대회 입상</a>
-        <a href="locations.html">오시는 길</a>
-        <a href="gallery.html">갤러리</a>
-        <a href="tournaments.html">대회 일정</a>
+        <span class="nav__group">
+          <button class="nav__grouptop" type="button" aria-expanded="false">대회 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+          <span class="nav__menu">
+            <a href="tournaments.html">대회 일정</a>
+            <a href="awards.html">대회 입상</a>
+          </span>
+        </span>
         <a href="notice.html" aria-current="page">공지사항</a>
+        <a href="contact.html" class="nav__cta-mobile">예약/상담 신청</a>
       </nav>
       <div class="nav__cta">
         <a class="btn btn--primary" href="contact.html">예약/상담 신청</a>
@@ -199,13 +210,33 @@
     },
     {
       category: "칼럼",
-      title: "[코치 칼럼] 스윙이 극적으로 변하는 순간에 대하여",
-      date: "2026-07-15",
-      body: `레슨을 하다 보면 회원님들의 스윙이 갑자기 좋아지는 순간이 있습니다.
+      title: "[코치 칼럼] 우리는 배드민턴을 어떻게 이해하는가",
+      date: "2026-08-08",
+      body: `배드민턴은 스윙을 잘해야 할까요, 스텝을 잘 밟아야 할까요.
 
-기술을 백 번 설명하는 것보다, 몸이 그 감각을 한 번 느끼는 것이 훨씬 중요하다는 걸 매번 느낍니다. 직선 스윙도, 키네틱 체인도 결국 그 '한 번의 감각'을 만들기 위한 과정입니다.
+레슨을 하다 보면 정말 자주 받는 질문입니다. 답은 시시합니다. 당연히 둘 다 잘해야 합니다.
 
-앞으로 이 공간에 배드민턴에 대한 생각들을 종종 적어보려 합니다. 편하게 읽어주세요.`
+그런데 저는 이 질문 자체가 조금 잘못됐다고 생각합니다. 진짜 물어야 할 것은 "무엇을 잘해야 하나"가 아니라 "나에게 맞는 스윙과 스텝은 무엇인가"이기 때문입니다.
+
+동호인은 선수가 아닙니다. 키도, 팔 길이도, 근력도, 유연성도, 무릎 상태도, 코트에 설 수 있는 시간도 전부 다릅니다. 그런데 많은 곳에서 모두에게 똑같은 폼을 가르칩니다. 교과서에 나오는 그 폼이 틀렸다는 게 아닙니다. 다만 그 폼은, 그 폼을 쓸 수 있는 몸을 가진 사람의 것입니다.
+
+리부트가 레슨을 시작할 때 가장 먼저 하는 일은 가르치는 게 아니라 보는 것입니다. 이 사람의 몸이 지금 무엇을 할 수 있고 무엇을 할 수 없는지. 어깨가 어디까지 열리는지, 무릎이 이 각도를 버텨주는지, 한 게임을 뛰고 나면 어디부터 무너지는지.
+
+그 다음에 그 몸으로 낼 수 있는 최적의 스윙과 스텝을 입힙니다. 남의 폼이 아니라 본인의 폼을 만드는 것입니다. 이렇게 세팅을 마치고 레슨을 진행했을 때, 결과는 드라마틱합니다. 과장이 아닙니다. 몇 달을 제자리였던 분이 몇 주 만에 달라지는 것을 저는 계속 봐 왔습니다.
+
+이 글을 쓰는 내내 저는 자부합니다. 제가 만든 이 아카데미가 국내 최고라는 것을요.
+
+제 코치 인생에서 가장 자랑스러운 것이 두 가지 있습니다. 하나는 선수로서 국제대회에서 우승한 것입니다. 다른 하나는 배드민턴을 시작한 지 1년 만에 A조를 만들어낸 일입니다.
+
+1년은 길고도 짧은 시간입니다. 쉬웠다고 말하지는 않겠습니다. 시간도 돈도 많이 투자했습니다. 그래서 가능했던 것입니다. 다만 그 투자가 아무 데나 쏟아부은 투자는 아니었습니다. 방향이 정확했기 때문에 1년이라는 시간 안에 들어올 수 있었습니다.
+
+방법은 이렇습니다. 먼저 그 사람만의 주특기를 확실하게 강화합니다. 누구에게나 하나쯤은 남들보다 나은 것이 있습니다. 그것을 무기로 만듭니다. 그리고 나머지를 포괄적으로 7할 이상까지 끌어올립니다.
+
+주특기 하나와 7할의 기본기. 이 두 가지가 갖춰지면 그때부터는 다 됩니다. 어떤 상대를 만나도, 어떤 상황이 와도 풀어갈 수 있습니다.
+
+배드민턴을 꽤 오래 치셨는데 어느 순간부터 늘지 않는다고 느끼신다면, 실력이 멈춘 게 아닐 수 있습니다. 몸에 맞지 않는 폼을 억지로 끼워 맞추고 계신 것일지도 모릅니다.
+
+한 번 봐 드리겠습니다. 거기서부터가 시작입니다.`
     }
   ];
 
