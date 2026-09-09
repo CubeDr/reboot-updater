@@ -8,9 +8,16 @@
   <link rel="icon" type="image/png" href="assets/img/favicon.png?v=1" />
   <link rel="apple-touch-icon" href="assets/img/favicon.png?v=1" />
   <link rel="stylesheet" href="assets/css/styles.css?v=2" />
+  <link rel="stylesheet" href="assets/css/site-refresh.css?v=2" />
+  <meta property="og:title" content="대회 입상 | 리부트아카데미" />
+  <meta property="og:type" content="website" />
+  <meta property="og:description" content="리부트아카데미 코치와 회원들의 대회 입상 기록 — 전국-세계 무대에서 증명한 실력." />
+  <link rel="canonical" href="https://reboot-badminton.com/awards.html" />
 </head>
 <body>
   <a class="skip-link" href="#main">본문 바로가기</a>
+
+  <aside class="campaign-strip" data-campaign aria-label="연말 레슨 이벤트"><a class="container" href="programs.html#year-end-offer"><span>오남·별내 쿠폰제 8회 30만 원</span><span>2026.12.31까지</span><small>시간대별 정원 충족 시 조기 마감 · 가능 시간 확인 →</small></a></aside>
 
   <header class="nav" data-nav>
     <div class="container nav__inner">
@@ -18,7 +25,7 @@
         <span class="brand__mark" aria-hidden="true"><img src="assets/img/reboot-mark.png?v=2" alt="" style="height:38px;width:auto;display:block;position:relative;top:-3px" /></span>
         <span class="brand__word">REBOOT<small>BADMINTON</small></span>
       </a>
-      <nav class="nav__links" aria-label="주요 메뉴">
+      <nav id="primary-navigation" class="nav__links" aria-label="주요 메뉴">
         <a href="index.html">홈</a>
         <a href="about.html">아카데미</a>
         <a href="programs.html">프로그램</a>
@@ -29,7 +36,7 @@
       </nav>
       <div class="nav__cta">
         <a class="btn btn--primary" href="contact.html">예약/상담 신청</a>
-        <button class="nav__toggle" data-nav-toggle aria-label="메뉴 열기" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+        <button class="nav__toggle" data-nav-toggle aria-controls="primary-navigation" aria-label="메뉴 열기" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
       </div>
     </div>
   </header>
@@ -100,7 +107,9 @@
         </div>
 
         <!-- 회원 입상 명단 (자동 생성) -->
+
         <div class="award-groups" data-award-groups></div>
+
         <noscript><p class="awards-note">회원 입상 명단은 자바스크립트가 켜진 환경에서 표시됩니다.</p></noscript>
       </div>
     </section>
@@ -133,7 +142,7 @@
     </div>
   </footer>
 
-  <script src="assets/js/main.js?v=4" defer></script>
+  <script src="assets/js/main.js?v=6" defer></script>
   <!-- 네이버 애널리틱스 -->
   <script type="text/javascript" src="//wcs.pstatic.net/wcslog.js"></script>
   <script type="text/javascript">
@@ -141,5 +150,7 @@
   wcs_add["wa"] = "1a880685034e340";
   if(window.wcs) { wcs_do(); }
   </script>
+  <script src="assets/js/site-refresh.js?v=1" defer></script>
+  <nav class="mobile-booking" aria-label="빠른 상담"><a href="tel:010-3105-6212">전화 문의</a><a href="contact.html">무료 체험 상담 →</a></nav>
 </body>
 </html>

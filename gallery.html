@@ -24,9 +24,16 @@
     .g-subhead p { color: var(--c-fg-muted); font-size: .95rem; margin: 0; }
     @media (max-width: 560px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: var(--sp-3); } .g-card figcaption { font-size: .82rem; padding: .55rem .5rem .65rem; } }
   </style>
+  <link rel="stylesheet" href="assets/css/site-refresh.css?v=2" />
+  <meta property="og:title" content="갤러리 | 리부트아카데미" />
+  <meta property="og:type" content="website" />
+  <meta property="og:description" content="리부트아카데미와 안트로크가 코트 위에서 함께한 선수, 코치, 그리고 배드민턴 동료들." />
+  <link rel="canonical" href="https://reboot-badminton.com/gallery.html" />
 </head>
 <body>
   <a class="skip-link" href="#main">본문 바로가기</a>
+
+  <aside class="campaign-strip" data-campaign aria-label="연말 레슨 이벤트"><a class="container" href="programs.html#year-end-offer"><span>오남·별내 쿠폰제 8회 30만 원</span><span>2026.12.31까지</span><small>시간대별 정원 충족 시 조기 마감 · 가능 시간 확인 →</small></a></aside>
 
   <header class="nav" data-nav>
     <div class="container nav__inner">
@@ -34,7 +41,7 @@
         <span class="brand__mark" aria-hidden="true"><img src="assets/img/reboot-mark.png?v=2" alt="" style="height:38px;width:auto;display:block;position:relative;top:-3px" /></span>
         <span class="brand__word">REBOOT<small>BADMINTON</small></span>
       </a>
-      <nav class="nav__links" aria-label="주요 메뉴">
+      <nav id="primary-navigation" class="nav__links" aria-label="주요 메뉴">
         <a href="index.html">홈</a>
         <a href="about.html">아카데미</a>
         <a href="programs.html">프로그램</a>
@@ -45,7 +52,7 @@
       </nav>
       <div class="nav__cta">
         <a class="btn btn--primary" href="contact.html">예약/상담 신청</a>
-        <button class="nav__toggle" data-nav-toggle aria-label="메뉴 열기" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+        <button class="nav__toggle" data-nav-toggle aria-controls="primary-navigation" aria-label="메뉴 열기" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
       </div>
     </div>
   </header>
@@ -216,7 +223,7 @@
     </div>
   </footer>
 
-  <script src="assets/js/main.js?v=4" defer></script>
+  <script src="assets/js/main.js?v=6" defer></script>
   <!-- 네이버 애널리틱스 -->
   <script type="text/javascript" src="//wcs.pstatic.net/wcslog.js"></script>
   <script type="text/javascript">
@@ -224,5 +231,7 @@
   wcs_add["wa"] = "1a880685034e340";
   if(window.wcs) { wcs_do(); }
   </script>
+  <script src="assets/js/site-refresh.js?v=1" defer></script>
+  <nav class="mobile-booking" aria-label="빠른 상담"><a href="tel:010-3105-6212">전화 문의</a><a href="contact.html">무료 체험 상담 →</a></nav>
 </body>
 </html>

@@ -1,0 +1,142 @@
+:root { --c-primary:#244cce; --c-primary-strong:#101c38; --c-fg:#101b34; --c-fg-soft:#475771; --c-surface:#f4f6fa; --shadow-lg:0 24px 60px #0e1b3814; }
+body { overflow-wrap:break-word; }
+h1,h2,h3,h4 { word-break:keep-all; text-wrap:balance; line-height:1.22; letter-spacing:-.035em; }
+p { word-break:keep-all; overflow-wrap:anywhere; }
+.container { max-width:1200px; }
+.nav { border-bottom:1px solid #dbe1ec; }
+.nav__links { gap:clamp(10px,1.3vw,22px); }
+.nav__links a { white-space:nowrap; }
+.nav__links a[aria-current="page"] { color:#244cce; font-weight:800; }
+.page-hero { padding-block:60px 64px; background:#101c38; border:0; color:#fff; }
+.page-hero h1 { color:#fff; max-width:24ch; }
+.page-hero .lead { color:#d2dbea; max-width:65ch; margin-top:22px; }
+.page-hero .eyebrow,.page-hero .crumb { color:#b5c7ee; }
+.page-hero .crumb { margin-bottom:30px; }
+.card { border-color:#dce2ec; box-shadow:none; }
+.card p { line-height:1.85; }
+.section-head { gap:28px; align-items:flex-end; }
+.reveal { opacity:1; transform:none; }
+.text-link { display:inline-flex; color:#244cce; font-weight:700; padding-block:12px; text-underline-offset:5px; }
+.text-link:hover { text-decoration:underline; }
+.step-kicker { display:block; color:#506180; font-size:.78rem; letter-spacing:.12em; font-weight:750; margin-bottom:28px; }
+.page-jumps { display:flex; gap:10px; flex-wrap:wrap; padding-block:24px; border-bottom:1px solid #dce2ec; }
+.page-jumps a { border:1px solid #dce2ec; border-radius:99px; padding:10px 18px; font-size:.88rem; font-weight:700; }
+.page-jumps a:hover { background:#101c38; color:#fff; }
+section[id],article[id] { scroll-margin-top:95px; }
+.plan { display:flex; flex-direction:column; padding:clamp(24px,3vw,38px); }
+.plan>.btn { margin-top:auto; }
+.plan .price-box { margin-bottom:24px; }
+.plan__name { font-size:1.7rem; }
+.price-list b { white-space:nowrap; font-variant-numeric:tabular-nums; }
+.price-note { line-height:1.8; font-size:.85rem; }
+.staff-card { display:flex; flex-direction:column; }
+.staff-card>p { flex:1; }
+.staff-inquiry { font-size:.9rem; margin-top:18px; }
+.staff-card__photo { background:#e8edf5; }
+.booking-context { background:#edf4ff; padding:14px; border-radius:10px; color:#183f95; margin-bottom:18px; }
+.gform { margin-top:20px; }
+.gallery-open { display:block; padding:0; width:100%; border:0; background:transparent; cursor:zoom-in; }
+.gallery-open img { transition:transform .3s; }
+.gallery-open:hover img { transform:scale(1.025); }
+.photo-viewer { margin:auto; border:0; border-radius:16px; background:#0c1628; color:#fff; width:min(96vw,1100px); padding:18px; max-height:94svh; }
+.photo-viewer::backdrop { background:#030913db; }
+.photo-viewer img { max-height:75svh; width:100%; object-fit:contain; }
+.photo-viewer-bar { display:flex; justify-content:space-between; align-items:center; padding:10px 0; gap:12px; }
+.photo-viewer button { min-width:44px; min-height:44px; color:#fff; border:1px solid #77839a; border-radius:10px; background:transparent; }
+.photo-viewer-caption { padding:10px 0; font-size:.9rem; }
+.mobile-booking { display:none; }
+.campaign-strip { background:#d7ef26; color:#102036; }
+.campaign-strip a { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; column-gap:20px; row-gap:3px; padding-block:12px; text-align:center; font-size:.88rem; font-weight:750; }
+.campaign-strip small { font-size:.76rem; }
+.campaign-pill { display:inline-flex; align-items:center; border-radius:99px; background:#d7ef26; color:#102036; padding:8px 15px; font-weight:800; font-size:.8rem; }
+.campaign-note { font-size:.86rem; color:#44526c; margin-top:18px; }
+.reboot-roadmap { padding-block:clamp(70px,9vw,112px); background:#f3f5f9; }
+.section-hook { display:flex; justify-content:space-between; align-items:flex-end; gap:32px; margin-bottom:44px; }
+.section-hook h2 { font-size:clamp(2.2rem,4.6vw,3.8rem); letter-spacing:-.05em; line-height:1.2; margin-top:16px; }
+.section-hook p { max-width:34ch; color:#52617c; line-height:1.85; font-size:1rem; }
+.roadmap-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; }
+.roadmap-card { border:1px solid #d6dfed; border-radius:20px; background:#fff; padding:32px; display:flex; flex-direction:column; }
+.roadmap-card--main { background:#101c38; color:#fff; border-color:#101c38; }
+.roadmap-code { display:flex; justify-content:space-between; align-items:center; margin-bottom:38px; }
+.roadmap-code b { font:800 4rem/1 var(--font-display); letter-spacing:-.04em; }
+.roadmap-code span { font-size:.72rem; font-weight:700; border:1px solid #b8c6d9; border-radius:99px; padding:7px 11px; }
+.roadmap-card--main .roadmap-code b { color:#dcf228; }
+.roadmap-card h3 { font-size:1.7rem; margin-bottom:15px; }
+.roadmap-card p { color:#52617c; font-size:1rem; line-height:1.8; min-height:5.4em; }
+.roadmap-card--main p { color:#d1dbee; }
+.roadmap-card ul { border-top:1px solid #d9e1ec; margin-top:25px; padding-top:20px; display:grid; gap:12px; }
+.roadmap-card li { display:flex; gap:10px; font-weight:600; font-size:.94rem; }
+.roadmap-card li::before { content:'✓'; color:#244cce; }
+.roadmap-card--main li::before { color:#d7ef26; }
+.roadmap-card .text-link { margin-top:22px; }
+.roadmap-card--main .text-link { color:#d7ef26; }
+.roadmap-footer { display:flex; justify-content:space-between; align-items:center; gap:24px; margin-top:28px; }
+.roadmap-footer p { max-width:66ch; color:#53617b; font-size:.85rem; }
+.offer-section { background:#fff; padding-block:clamp(60px,7vw,100px); }
+.offer-panel { background:#101c38; border-radius:28px; padding:clamp(26px,5vw,64px); color:#fff; }
+.offer-panel .eyebrow { color:#c7da66; }
+.offer-panel h2 { font-size:clamp(2.3rem,4.7vw,4rem); margin-top:20px; line-height:1.2; }
+.offer-panel h2 em { font-style:normal; color:#e0f237; }
+.offer-intro { color:#c8d3e9; max-width:61ch; line-height:1.85; margin-top:22px; }
+.offer-grid { display:grid; grid-template-columns:1.08fr .92fr; margin-top:38px; gap:24px; }
+.offer-price { background:#e2f33d; color:#102036; border-radius:18px; padding:32px; }
+.offer-price-top { display:flex; justify-content:space-between; gap:15px; font-weight:750; }
+.offer-price .money { margin-block:24px 12px; display:flex; align-items:baseline; gap:6px; }
+.offer-price .money b { font:800 clamp(4rem,7vw,6.4rem)/1 var(--font-display); letter-spacing:-.06em; }
+.offer-price .money span { font-size:1.2rem; font-weight:700; }
+.offer-price p { font-size:.93rem; line-height:1.8; }
+.offer-details { display:flex; flex-direction:column; gap:12px; }
+.offer-detail { background:#1b2945; border:1px solid #ffffff1c; border-radius:16px; padding:24px; }
+.offer-detail h3 { color:#fff; font-size:1.2rem; margin-bottom:10px; }
+.offer-detail p { color:#cdd7e9; font-size:.93rem; line-height:1.75; }
+.offer-actions { display:flex; flex-wrap:wrap; gap:12px; margin-top:28px; }
+.offer-actions .btn--primary { background:#dff136; color:#102036; border-color:#dff136; }
+.offer-actions .btn--ghost { color:#fff; border-color:#71819f; }
+.offer-footnote { color:#bcc9df; font-size:.83rem; margin-top:24px; line-height:1.8; }
+.method-section { padding-block:clamp(65px,8vw,105px); background:#f4f6fa; }
+.method-rows { border-top:1px solid #ced7e6; }
+.method-row { display:grid; grid-template-columns:.85fr 1.15fr; gap:36px; border-bottom:1px solid #ced7e6; padding:28px 0; }
+.method-before { color:#53627d; display:flex; gap:15px; align-items:baseline; font-size:1.1rem; }
+.method-before b { font:700 1rem var(--font-display); color:#687992; }
+.method-after { display:flex; gap:18px; }
+.method-after>span { color:#244cce; font-size:1.5rem; }
+.method-after h3 { font-size:1.35rem; margin-bottom:10px; }
+.method-after p { color:#52617c; line-height:1.8; }
+.method-cta { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:22px; margin-top:36px; }
+.method-cta strong { font-size:1.15rem; }
+@media(max-width:1050px) and (min-width:761px) { .nav__cta .btn { font-size:.8rem; padding:10px; } .nav__links { gap:10px; } .nav__links a { font-size:.82rem; } .brand__word { font-size:1.3rem; } }
+@media(max-width:760px) {
+  body:has(.mobile-booking) { padding-bottom:calc(72px + env(safe-area-inset-bottom)); }
+  .container { padding-inline:20px; }
+  .page-hero { padding-block:36px 44px; }
+  .page-hero h1 { font-size:2.35rem; }
+  .page-hero .lead { font-size:1rem; }
+  .nav[data-open="true"] .nav__links { max-height:calc(100svh - 80px); overflow-y:auto; }
+  .nav__toggle { width:44px; height:44px; align-items:center; justify-content:center; }
+  .section-head,.section-hook { flex-direction:column; align-items:flex-start; }
+  .section-hook p { max-width:none; }
+  .plan__name { font-size:1.45rem; }
+  .price-list li { gap:12px; }
+  .grid--4:has(.staff-card) { grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+  .staff-card { padding:16px; }
+  .staff-card__name { font-size:1.1rem; }
+  .staff-card__tag { font-size:.68rem; }
+  .staff-card p { font-size:.86rem; }
+  .mobile-booking { display:grid; grid-template-columns:.8fr 1.2fr; position:fixed; z-index:8000; bottom:0; left:0; right:0; gap:10px; padding:10px 16px calc(10px + env(safe-area-inset-bottom)); background:#fffffff5; border-top:1px solid #dce2ec; }
+  .mobile-booking a { display:flex; justify-content:center; align-items:center; min-height:46px; border-radius:10px; background:#eef2f9; font-size:.94rem; font-weight:750; }
+  .mobile-booking a:last-child { color:#fff; background:#244cce; }
+  .share-fab { bottom:calc(88px + env(safe-area-inset-bottom)) !important; width:44px !important; height:44px !important; }
+  .share-panel { bottom:calc(142px + env(safe-area-inset-bottom)) !important; }
+  .roadmap-grid,.offer-grid { grid-template-columns:1fr; }
+  .roadmap-card { padding:26px; }
+  .roadmap-code { margin-bottom:25px; }
+  .roadmap-card p { min-height:0; }
+  .roadmap-footer { flex-direction:column; align-items:flex-start; }
+  .offer-price { padding:25px; }
+  .offer-panel { border-radius:20px; }
+  .offer-actions .btn { flex:1 1 200px; }
+  .method-row { grid-template-columns:1fr; gap:20px; }
+  .method-before { font-size:1rem; }
+  .hero--cinema h1 { font-size:clamp(2.4rem,8.5vw,3.8rem); }
+}
+@media(prefers-reduced-motion:reduce) { .gallery-open img { transition:none; } }

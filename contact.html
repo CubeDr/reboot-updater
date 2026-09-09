@@ -8,9 +8,37 @@
   <link rel="icon" type="image/png" href="assets/img/favicon.png?v=1" />
   <link rel="apple-touch-icon" href="assets/img/favicon.png?v=1" />
   <link rel="stylesheet" href="assets/css/styles.css?v=2" />
+  <link rel="stylesheet" href="assets/css/site-refresh.css?v=contact3" />
+  <meta property="og:title" content="예약/상담 신청 | 리부트아카데미" />
+  <meta property="og:type" content="website" />
+  <meta property="og:description" content="리부트아카데미 배드민턴 레슨 예약/상담 신청. 이름과 연락처만 남기면 가까운 지점에서 빠르게 연락드립니다." />
+  <link rel="canonical" href="https://reboot-badminton.com/contact.html" />
+  <style>
+    .contact-page .page-hero { padding-block:24px; }
+    .contact-page .page-hero .crumb,.contact-page .page-hero .eyebrow { display:none; }
+    .contact-page .page-hero h1 { font-size:clamp(1.6rem,3vw,2.4rem); }
+    .contact-page .page-hero h1 br { display:none; }
+    .contact-page .page-hero .lead { margin-top:10px; font-size:1rem; }
+    .contact-page .page-hero + .section { padding-top:28px; }
+    .contact-page .contact-layout { grid-template-columns:minmax(0,1fr) minmax(0,2fr); }
+    .contact-page .gform { margin-top:0; }
+    @media(max-width:900px) {
+      .contact-page .contact-layout { grid-template-columns:minmax(0,1fr); }
+      .contact-page #booking { grid-row:1; }
+    }
+  .direct-booking { display:grid; gap:12px; }
+    .direct-booking .booking-field,.direct-booking legend { font-weight:750; margin-top:14px; }
+    .direct-booking input:not([type=checkbox]),.direct-booking select { width:100%; min-width:0; padding:14px; border:1px solid #c9d3e5; border-radius:10px; background:white; color:#101b34; font:inherit; }
+    .direct-booking fieldset { min-width:0; border:1px solid #dce2ec; border-radius:12px; padding:16px; }
+    .booking-choice { display:flex; align-items:center; gap:10px; padding:9px 0; font-size:.95rem; }
+    .booking-choice input { flex-shrink:0; width:20px; height:20px; accent-color:#244cce; }
+    .direct-booking button { margin-top:20px; }
+  </style>
 </head>
-<body>
+<body class="contact-page">
   <a class="skip-link" href="#main">본문 바로가기</a>
+
+  <aside class="campaign-strip" data-campaign aria-label="연말 레슨 이벤트"><a class="container" href="programs.html#year-end-offer"><span>오남·별내 쿠폰제 8회 30만 원</span><span>2026.12.31까지</span><small>시간대별 정원 충족 시 조기 마감 · 가능 시간 확인 →</small></a></aside>
 
   <header class="nav" data-nav>
     <div class="container nav__inner">
@@ -18,7 +46,7 @@
         <span class="brand__mark" aria-hidden="true"><img src="assets/img/reboot-mark.png?v=2" alt="" style="height:38px;width:auto;display:block;position:relative;top:-3px" /></span>
         <span class="brand__word">REBOOT<small>BADMINTON</small></span>
       </a>
-      <nav class="nav__links" aria-label="주요 메뉴">
+      <nav id="primary-navigation" class="nav__links" aria-label="주요 메뉴">
         <a href="index.html">홈</a>
         <a href="about.html">아카데미</a>
         <a href="programs.html">프로그램</a>
@@ -29,7 +57,7 @@
       </nav>
       <div class="nav__cta">
         <a class="btn btn--primary" href="contact.html" aria-current="page">예약/상담 신청</a>
-        <button class="nav__toggle" data-nav-toggle aria-label="메뉴 열기" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+        <button class="nav__toggle" data-nav-toggle aria-controls="primary-navigation" aria-label="메뉴 열기" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
       </div>
     </div>
   </header>
@@ -39,14 +67,14 @@
       <div class="container">
         <p class="crumb"><a href="index.html">홈</a> &nbsp;/&nbsp; 예약/상담 신청</p>
         <span class="eyebrow">Booking</span>
-        <h1>한 번 쳐보고<br>결정하세요</h1>
+        <h1>한 번 쳐보고 결정하세요</h1>
         <p class="lead">이름과 연락처만 남겨 주시면 됩니다. 가까운 지점에서 빠르게 연락드려, 체험 레슨 일정과 가장 맞는 프로그램을 함께 잡아드릴게요.</p>
       </div>
     </section>
 
     <section class="section">
       <div class="container">
-        <div class="grid grid--2" style="gap:var(--sp-16); align-items:start">
+        <div class="grid grid--2 contact-layout" style="gap:var(--sp-16); align-items:start">
           <!-- 좌측: 안내 -->
           <div class="reveal">
             <span class="eyebrow">신청하면 이렇게 진행돼요</span>
@@ -61,17 +89,108 @@
             </div>
           </div>
 
-          <!-- 우측: 구글폼 직접 연결 -->
-          <div class="form-card form-card--embed reveal">
-            <iframe
-              class="gform"
-              title="리부트아카데미 예약/상담 신청서"
-              src="https://docs.google.com/forms/d/e/1FAIpQLSfSpwJI0X2mglcA5OBDHLOo4MWuL3A45T1Gtzmyl-YgUFRKcw/viewform?embedded=true"
-              loading="lazy">
-              불러오는 중…
-            </iframe>
+          <!-- 우측: 신청 안내와 공식 신청서 -->
+          <div class="form-card form-card--embed" id="booking">
+            <p class="booking-context" data-booking-context hidden></p>
+            <h2 style="font-size:1.65rem;margin-bottom:12px">무료 체험·레슨 상담</h2>
+            <p class="form-note" style="margin-bottom:20px">신청서를 제출하면 담당자가 연락해 방문 일정을 조율합니다. 예약은 일정 안내 후 확정됩니다.</p>
+            <form class="direct-booking" action="https://docs.google.com/forms/d/e/1FAIpQLSfSpwJI0X2mglcA5OBDHLOo4MWuL3A45T1Gtzmyl-YgUFRKcw/formResponse" method="post" target="_self"><p class="form-note">* 필수 항목 · 제출 후 Google 신청서의 접수 결과 화면으로 이동합니다.</p>
+<label class="booking-field" for="q791178183">이름 *</label>
+<input id="q791178183" type="text" name="entry.791178183" required>
+<label class="booking-field" for="q1968880030">연락처(휴대폰) *</label>
+<input id="q1968880030" type="tel" name="entry.1968880030" required autocomplete="tel" inputmode="tel">
+<label class="booking-field" for="q1099111451">나이</label>
+<select id="q1099111451" name="entry.1099111451"><option value="">선택해 주세요</option>
+<option value="10대">10대</option>
+<option value="20대">20대</option>
+<option value="30대">30대</option>
+<option value="40대">40대</option>
+<option value="50대">50대</option>
+<option value="60대">60대</option>
+</select>
+<label class="booking-field" for="q940976173">희망 지점</label>
+<select id="q940976173" name="entry.940976173"><option value="">선택해 주세요</option>
+<option value="리부트배드민턴전용구장 1호점 쿠폰제 (진건 오남 위치)">리부트배드민턴전용구장 1호점 쿠폰제 (진건 오남 위치)</option>
+<option value="리부트배드민턴센터&amp;샵 2호점 아카데미 (별내 청학 위치)">리부트배드민턴센터&amp;샵 2호점 아카데미 (별내 청학 위치)</option>
+</select>
+<fieldset data-required-group="false"><legend>희망 요일 시간대</legend>
+<label class="booking-choice"><input type="checkbox" name="entry.1680516708" value="평일 새벽 6:00 ~ 09:00 (단체 레슨)"> 평일 새벽 6:00 ~ 09:00 (단체 레슨)</label>
+<label class="booking-choice"><input type="checkbox" name="entry.1680516708" value="평일 오전 오후 10:00~ 05:00 (쿠폰제 레슨 자유)"> 평일 오전 오후 10:00~ 05:00 (쿠폰제 레슨 자유)</label>
+<label class="booking-choice"><input type="checkbox" name="entry.1680516708" value="평일 월화수목 PM 6:00 ~ 10:30 (리부트 아카데미)"> 평일 월화수목 PM 6:00 ~ 10:30 (리부트 아카데미)</label>
+<label class="booking-choice"><input type="checkbox" name="entry.1680516708" value="평일 금요일 PM 7:00 ~ 11:00 (리부트 금요 집중반)"> 평일 금요일 PM 7:00 ~ 11:00 (리부트 금요 집중반)</label>
+<label class="booking-choice"><input type="checkbox" name="entry.1680516708" value="평일 야간 PM 10:30 ~ 1:00 (리부트 나이트반)"> 평일 야간 PM 10:30 ~ 1:00 (리부트 나이트반)</label>
+<label class="booking-choice"><input type="checkbox" name="entry.1680516708" value="주말 토,일 AM-PM 09:00 ~ 16:00 (2:1 아카데미)"> 주말 토,일 AM-PM 09:00 ~ 16:00 (2:1 아카데미)</label>
+<label class="booking-choice"><input type="checkbox" name="entry.1680516708" value="주말 토.일 AM-PM 10:00 ~ 14:00 (6:1 유소년 수업)"> 주말 토.일 AM-PM 10:00 ~ 14:00 (6:1 유소년 수업)</label>
+</fieldset>
+<label class="booking-field" for="q702627024">급수 (레벨)</label>
+<select id="q702627024" name="entry.702627024"><option value="">선택해 주세요</option>
+<option value="왕초심 (처음)">왕초심 (처음)</option>
+<option value="초심">초심</option>
+<option value="D조">D조</option>
+<option value="C조">C조</option>
+<option value="B조">B조</option>
+<option value="A조">A조</option>
+<option value="엘리트 과정 , 코치 과정">엘리트 과정 , 코치 과정</option>
+</select>
+<label class="booking-field" for="q1899519794">레슨 경험 유무</label>
+<select id="q1899519794" name="entry.1899519794"><option value="">선택해 주세요</option>
+<option value="최근 1개월 이내">최근 1개월 이내</option>
+<option value="3개월 이내">3개월 이내</option>
+<option value="6개월이내">6개월이내</option>
+<option value="1년이내">1년이내</option>
+<option value="없음">없음</option>
+</select>
+<label class="booking-field" for="q25249698">이전 담당 코치님 성함 (경험이 없으면 없음) *</label>
+<input id="q25249698" type="text" name="entry.25249698" required>
+<fieldset data-required-group="true"><legend>가장 해결하고 싶은 부분 *</legend>
+<label class="booking-choice"><input type="checkbox" name="entry.442720071" value="팔꿈치 통증"> 팔꿈치 통증</label>
+<label class="booking-choice"><input type="checkbox" name="entry.442720071" value="어깨 통증"> 어깨 통증</label>
+<label class="booking-choice"><input type="checkbox" name="entry.442720071" value="스매시 파워 부족"> 스매시 파워 부족</label>
+<label class="booking-choice"><input type="checkbox" name="entry.442720071" value="클리어 비거리 부족"> 클리어 비거리 부족</label>
+<label class="booking-choice"><input type="checkbox" name="entry.442720071" value="스텝이 느려요."> 스텝이 느려요.</label>
+<label class="booking-choice"><input type="checkbox" name="entry.442720071" value="반응이 늦어요."> 반응이 늦어요.</label>
+<label class="booking-choice"><input type="checkbox" name="entry.442720071" value="게임을 잘 치고싶어요."> 게임을 잘 치고싶어요.</label>
+</fieldset>
+<label class="booking-field" for="q1877721784">원하는 레슨 스타일 *</label>
+<select id="q1877721784" name="entry.1877721784" required><option value="">선택해 주세요</option>
+<option value="스윙 교정 위주">스윙 교정 위주</option>
+<option value="스텝 교정 위주">스텝 교정 위주</option>
+<option value="게임 교정 위주">게임 교정 위주</option>
+<option value="모두 교정">모두 교정</option>
+</select>
+<label class="booking-field" for="q1293726895">희망 레슨 프로그램 *</label>
+<select id="q1293726895" name="entry.1293726895" required><option value="">선택해 주세요</option>
+<option value="쿠폰제 레슨 (1:1 회당 40분 레슨)  ,(2:1 회당 60분 레슨) -1호점">쿠폰제 레슨 (1:1 회당 40분 레슨)  ,(2:1 회당 60분 레슨) -1호점</option>
+<option value="1:1 개인 레슨 교정 (회당 60분레슨) - 1,2호점">1:1 개인 레슨 교정 (회당 60분레슨) - 1,2호점</option>
+<option value="AM,PM 10시~5시 쿠폰제 레슨 (회당 40분레슨) -2호점">AM,PM 10시~5시 쿠폰제 레슨 (회당 40분레슨) -2호점</option>
+<option value="3인 1조 저녁 아카데미 (회당 90분레슨) - 2호점">3인 1조 저녁 아카데미 (회당 90분레슨) - 2호점</option>
+<option value="2시간 주말 유소년반 (회당 120분레슨) - 2호점">2시간 주말 유소년반 (회당 120분레슨) - 2호점</option>
+<option value="2:1 주말반 레슨 (회당 60분레슨) -2호점">2:1 주말반 레슨 (회당 60분레슨) -2호점</option>
+</select>
+<label class="booking-field" for="q1983926109">무료 스타트 진단 희망 과정</label>
+<select id="q1983926109" name="entry.1983926109"><option value="">선택해 주세요</option>
+<option value="베이스 1단계 · 입문 (배드민턴 처음)">베이스 1단계 · 입문 (배드민턴 처음)</option>
+<option value="베이스 1.5단계 · 기초 (스윙 정체)">베이스 1.5단계 · 기초 (스윙 정체)</option>
+<option value="베이스 2단계 · 기초 완성 (기본은 칠 줄 앎)">베이스 2단계 · 기초 완성 (기본은 칠 줄 앎)</option>
+<option value="게임 입문 · 실전반 (게임관련 전술을 배우고 싶음)">게임 입문 · 실전반 (게임관련 전술을 배우고 싶음)</option>
+<option value="리셋 교정반 · D·C조 (실력이 정체됐음)">리셋 교정반 · D·C조 (실력이 정체됐음)</option>
+<option value="키즈반 (자녀 등록)">키즈반 (자녀 등록)</option>
+<option value="체험X 바로 등록희망">체험X 바로 등록희망</option>
+</select>
+<label class="booking-field" for="q1448821303">어떻게 알게 되었나요?</label>
+<select id="q1448821303" name="entry.1448821303"><option value="">선택해 주세요</option>
+<option value="유튜브">유튜브</option>
+<option value="인스타그램">인스타그램</option>
+<option value="블로그">블로그</option>
+<option value="지인추천 / 추천인 성함 상담 시 알려주세요!">지인추천 / 추천인 성함 상담 시 알려주세요!</option>
+<option value="기타">기타</option>
+</select>
+<fieldset data-required-group="true"><legend>개인정보 수집·이용에 동의합니다. (상담 목적 외 사용하지 않습니다.) *</legend>
+<label class="booking-choice"><input type="checkbox" name="entry.1747719993" value="동의"> 동의</label>
+</fieldset>
+<button class="btn btn--primary btn--block" type="submit">무료 체험·레슨 상담 신청하기 →</button></form>
             <p class="form-note" style="margin-top:var(--sp-4); text-align:center">
-              양식이 안 보이면
+              기존 Google 신청서로 작성하려면
               <a href="https://docs.google.com/forms/d/e/1FAIpQLSfSpwJI0X2mglcA5OBDHLOo4MWuL3A45T1Gtzmyl-YgUFRKcw/viewform" target="_blank" rel="noopener" style="color:var(--c-primary); font-weight:600">새 창에서 신청하기</a>
               - 전화 <a href="tel:010-3105-6212" style="color:var(--c-primary); font-weight:600">010-3105-6212</a>
             </p>
@@ -80,7 +199,7 @@
       </div>
     </section>
     <!-- ===== FAQ ===== -->
-    <section class="section section--surface">
+    <section class="section section--surface" id="faq">
       <div class="container">
         <div class="section-head center-head text-center">
           <span class="eyebrow" style="justify-content:center">자주 묻는 질문</span>
@@ -97,7 +216,7 @@
           </details>
           <details class="faq__item">
             <summary>수강료와 쿠폰 기한은 어떻게 되나요?<span class="faq__icon" aria-hidden="true"></span></summary>
-            <div class="faq__body"><p>오남점은 4회 18만 원 / 8회 30만 원이며, 등록 후 1개월 이내에 소진하시면 됩니다. 별내점 정규는 4회 20만 원 / 8회 39만 원, 동반 등록 시 8회 기준 1인당 36만 원입니다. 자세한 안내는 상담에서 도와드립니다.</p></div>
+            <div class="faq__body"><p>오남점은 4회 18만 원 / 8회 30만 원이며, 등록 후 1개월 이내에 소진하시면 됩니다. 별내점 정규는 4회 20만 원 / 8회 39만 원, 동반 등록 시 8회 기준 1인당 36만 원입니다. 별내점 평일 주간 쿠폰제는 4회 20만 원 / 8회 30만 원입니다. 두 지점 쿠폰제 8회 30만 원 이벤트는 2026년 12월 31일까지이며 시간대별 정원 충족 시 조기 마감될 수 있습니다. 자세한 적용 조건은 상담에서 안내합니다.</p></div>
           </details>
           <details class="faq__item">
             <summary>배드민턴화나 라켓이 없어도 되나요?<span class="faq__icon" aria-hidden="true"></span></summary>
@@ -129,7 +248,7 @@
     </div>
   </footer>
 
-  <script src="assets/js/main.js?v=4" defer></script>
+  <script src="assets/js/main.js?v=6" defer></script>
   <!-- 네이버 애널리틱스 -->
   <script type="text/javascript" src="//wcs.pstatic.net/wcslog.js"></script>
   <script type="text/javascript">
@@ -137,5 +256,18 @@
   wcs_add["wa"] = "1a880685034e340";
   if(window.wcs) { wcs_do(); }
   </script>
-</body>
+  <script src="assets/js/site-refresh.js?v=1" defer></script>
+<script>
+(() => {
+  document.querySelectorAll('[data-required-group="true"]').forEach(group => {
+    const boxes = [...group.querySelectorAll('input')];
+    const validate = () => boxes[0].setCustomValidity(boxes.some(box => box.checked) ? '' : '한 가지 이상 선택해 주세요.');
+    group.addEventListener('change', validate); validate();
+  });
+  const branch = new URLSearchParams(location.search).get('branch');
+  const select = document.querySelector('[name="entry.940976173"]');
+  if (branch === 'onam') select.selectedIndex = 1;
+  if (branch === 'byeollae') select.selectedIndex = 2;
+})();
+</script></body>
 </html>
