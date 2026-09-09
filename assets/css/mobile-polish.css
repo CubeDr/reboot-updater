@@ -1,0 +1,84 @@
+.copy-mobile { display:none; }
+@media(max-width:760px) {
+  .copy-desktop { display:none !important; }
+  .copy-mobile { display:inline !important; }
+  html { scroll-padding-top:80px; }
+  body { font-size:16px; }
+  .container { padding-inline:18px; }
+  main *, .grid>* { min-width:0; }
+  h1,h2,h3 { overflow-wrap:anywhere; text-wrap:pretty; }
+  p,li { line-height:1.7; }
+  .section { padding-block:44px; }
+  .page-hero { padding-block:26px 30px; }
+  .page-hero .crumb { margin-bottom:16px; font-size:12px; }
+  .page-hero h1 { font-size:clamp(27px,7.6vw,36px); line-height:1.3; }
+  .page-hero .lead { margin-top:14px; font-size:15px; line-height:1.75; }
+  .section h2,.section-hook h2,.offer-panel h2 { font-size:clamp(25px,7vw,32px) !important; line-height:1.3; }
+  .section-hook { gap:16px; margin-bottom:24px; }
+  .section-hook p,.lead { font-size:15px; }
+  .campaign-strip a { display:grid; grid-template-columns:1fr; gap:2px; padding-block:8px; font-size:13px; line-height:1.4; }
+  .campaign-strip small { font-size:11px; }
+  .nav__inner { gap:10px; min-height:64px; }
+  .brand__word { font-size:19px; }
+  .brand__word small { font-size:8px; letter-spacing:.18em; }
+  .nav__cta { gap:6px; }
+  .nav__cta>.btn { font-size:12px; padding:10px; min-height:44px; }
+  .btn { min-height:48px; white-space:normal; text-align:center; line-height:1.4; }
+  .hero--cinema .hero__inner { min-height:0; padding-top:180px; padding-bottom:90px; }
+  .hero--cinema h1 { margin-top:12px; font-size:clamp(29px,8.3vw,38px); line-height:1.22; }
+  .hero--cinema h1>.copy-mobile { color:#fff; }
+  .hero--cinema .lead { font-size:15px; max-width:29ch; margin-top:16px; }
+  .hero-avail { margin-bottom:14px; font-size:11px; white-space:normal; }
+  .hero--cinema .eyebrow { font-size:11px; letter-spacing:.05em; }
+  .hero--cinema .hero__actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:20px; }
+  .hero--cinema .btn--lg { padding:12px 8px; font-size:13px; }
+  .hero--cinema .hero__stats { grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; margin-top:24px; }
+  .hero--cinema .stat__num { font-size:24px; }
+  .hero--cinema .stat__label { font-size:12px; }
+  .hero-film-caption { font-size:10px; letter-spacing:.03em; }
+  .page-jumps { gap:8px; padding-block:16px; }
+  .page-jumps a { padding:10px 12px; font-size:13px; min-height:44px; }
+  .card,.plan,.roadmap-card { padding:22px; border-radius:16px; }
+  .grid--4:has(.staff-card) { grid-template-columns:minmax(0,1fr); gap:18px; }
+  .staff-card { padding:22px; }
+  .staff-card__name { font-size:22px; }
+  .staff-card__tag { font-size:12px; }
+  .staff-card p { font-size:15px; }
+  .roadmap-code { margin-bottom:18px; }
+  .roadmap-code b { font-size:44px; }
+  .roadmap-card h3 { font-size:24px; }
+  .roadmap-card p,.roadmap-card li { font-size:15px; }
+  .reboot-roadmap,.offer-section,.method-section { padding-block:44px; }
+  .offer-panel { padding:22px 18px; }
+  .offer-grid { gap:16px; margin-top:24px; }
+  .offer-price { padding:22px 18px; }
+  .offer-price .money b { font-size:64px; }
+  .offer-detail { padding:20px; }
+  .offer-footnote,.price-note { font-size:13px; line-height:1.75; }
+  .price-list li { flex-wrap:wrap; row-gap:4px; }
+  .award-names { grid-template-columns:minmax(0,1fr); }
+  .award-group { padding:18px; }
+  .award-chip { font-size:14px; overflow-wrap:anywhere; }
+  .award-hero { padding:20px; gap:12px; }
+  .contact-page .contact-layout { gap:30px !important; }
+  .contact-page #booking { padding:20px 16px; }
+  .contact-page .page-hero { padding-block:20px; }
+  .contact-page .page-hero h1 { font-size:27px; }
+  .direct-booking { gap:10px; }
+  .direct-booking .booking-field,.direct-booking legend { font-size:15px; line-height:1.6; }
+  .direct-booking input:not([type=checkbox]),.direct-booking select { font-size:16px !important; min-height:50px; padding:12px !important; }
+  .direct-booking fieldset { padding:12px; }
+  .direct-booking .booking-choice { font-size:14px; min-height:48px; align-items:flex-start; }
+  .booking-choice input { margin-top:2px; }
+  .footer__top { gap:24px; }
+  .footer__links a { display:inline-block; padding-block:9px; }
+  .footer__bottom { flex-wrap:wrap; gap:16px; font-size:12px; }
+}
+@media(max-width:360px) {
+  .container { padding-inline:14px; }
+  .nav__cta>.btn { max-width:82px; font-size:11px; }
+  .hero--cinema .hero__actions { grid-template-columns:1fr; }
+  .hero-avail { border-radius:12px; }
+}
+
+@media(max-width:760px) { .contact-page .share-fab,.contact-page .share-panel { display:none !important; } }
