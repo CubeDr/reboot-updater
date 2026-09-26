@@ -539,6 +539,54 @@ h3 { font-size: clamp(1.3rem, 2.4vw, 1.7rem); }
   .step__num { width: 52px; height: 52px; font-size: 1.4rem; }
 }
 
+/* ---------- Coaching preview and current notices ---------- */
+#correction-preview, #tuition, #qingdao-2026 { scroll-margin-top: calc(var(--nav-h) + 24px); }
+.correction-preview { background: #f3f6fb; }
+.preview-intro { display: grid; grid-template-columns: .8fr 1.2fr; gap: var(--sp-12); padding: var(--sp-8) 0; margin-bottom: var(--sp-8); border-top: 1px solid var(--c-border-strong); border-bottom: 1px solid var(--c-border-strong); }
+.preview-intro__statement { font-size: clamp(1.3rem, 2.5vw, 1.9rem); line-height: 1.45; letter-spacing: -.04em; }
+.preview-intro__statement strong { color: var(--c-primary); }
+.preview-intro > div { color: var(--c-fg-soft); }
+.preview-intro > div p + p { margin-top: var(--sp-4); }
+.preview-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sp-6); }
+.preview-card { min-width: 0; overflow: hidden; border: 1px solid var(--c-border); border-radius: var(--r-md); background: white; }
+.preview-card__heading { display: flex; gap: var(--sp-3); align-items: center; padding: var(--sp-4); }
+.preview-card__heading > span { color: var(--c-primary); font-weight: 800; font-family: var(--font-display); font-size: 1.5rem; }
+.preview-card__heading h3 { font-size: 1rem; }
+.preview-card__player { aspect-ratio: 9 / 16; background: #0f172a; }
+.preview-card__player iframe { display: block; width: 100%; height: 100%; border: 0; }
+.preview-card__link { display: flex; align-items: center; justify-content: space-between; padding: var(--sp-4); font-weight: 700; color: var(--c-primary); }
+.preview-card__link:hover { background: var(--c-primary-soft); }
+.preview-invite { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--sp-6); margin-top: var(--sp-8); }
+.preview-invite strong { font-size: 1.3rem; }
+.preview-note { margin-top: var(--sp-6); color: var(--c-fg-muted); font-size: .85rem; }
+.reboot-news { display: grid; grid-template-columns: 130px minmax(0, 1fr); gap: var(--sp-8); padding: var(--sp-8); background: #fff; border-left: 4px solid var(--c-primary); box-shadow: var(--shadow-sm); }
+.reboot-news__date { color: var(--c-primary); font-family: var(--font-display); display: flex; flex-direction: column; }
+.reboot-news__date span { font-weight: 700; letter-spacing: .08em; }
+.reboot-news__date time { font-size: 5rem; font-weight: 800; line-height: 1; }
+.reboot-news__tag { font-size: .8rem; font-weight: 700; color: var(--c-primary); }
+.reboot-news h3 { margin: var(--sp-2) 0 var(--sp-3); }
+.reboot-news p { color: var(--c-fg-soft); }
+.reboot-news a { display: inline-block; margin-top: var(--sp-4); color: var(--c-primary); font-weight: 700; }
+.tuition-table-wrap { margin-block: var(--sp-6); overflow-x: auto; }
+.tuition-table { width: 100%; border-collapse: collapse; color: var(--c-fg); font-size: .95rem; background: white; }
+.tuition-table caption { text-align: left; padding-bottom: var(--sp-3); color: var(--c-fg-soft); }
+.price .tuition-table caption { color: #d5dff2; }
+.tuition-table thead span { display: block; white-space: nowrap; }
+.tuition-table tbody th { white-space: nowrap; }
+.tuition-table th, .tuition-table td { padding: var(--sp-4); border-bottom: 1px solid var(--c-border); text-align: left; }
+.tuition-table thead { background: var(--c-primary-soft); }
+.tuition-table td { font-variant-numeric: tabular-nums; white-space: nowrap; }
+@media (max-width: 760px) {
+  .preview-intro { grid-template-columns: 1fr; gap: var(--sp-4); }
+  .preview-grid { grid-template-columns: 1fr; max-width: 340px; margin-inline: auto; }
+  .preview-invite { text-align: center; justify-content: center; }
+  .reboot-news { grid-template-columns: 1fr; gap: var(--sp-4); padding: var(--sp-6); }
+  .reboot-news__date { flex-direction: row; align-items: baseline; gap: var(--sp-3); }
+  .reboot-news__date time { font-size: 3rem; }
+  .tuition-table { font-size: .75rem; }
+  .tuition-table th, .tuition-table td { padding: .7rem .25rem; }
+}
+
 /* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

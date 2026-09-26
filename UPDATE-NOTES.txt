@@ -1,1 +1,0 @@
-Mobile layouts and concise intro copy updated. Native contact form uses existing Google Form field mappings. No live submission test or production deployment performed. All award records retained.
