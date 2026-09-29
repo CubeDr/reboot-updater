@@ -1,0 +1,15 @@
+# リ부트아카데미
+
+> 남양주 오남·별내 배드민턴 레슨과 지점별 수강료·시간표를 안내하는 공식 홈페이지입니다.
+
+## 지점 안내
+- [오남점](https://reboot-badminton.com/onam.html): 1인 40분 쿠폰제 개인레슨. 현재 대기 접수 중이며 일정은 상담으로 확인합니다.
+- [별내점](https://reboot-badminton.com/byeollae.html): 90분 정규 아카데미와 평일 주간 쿠폰제. 네이버 등록명은 리부트배드민턴센터&샵입니다.
+
+## 공식 안내
+- [프로그램·가격](https://reboot-badminton.com/programs.html): 상품별 수강료와 적용 기간
+- [코치진](https://reboot-badminton.com/coaches.html)
+- [체험·상담 및 FAQ](https://reboot-badminton.com/contact.html)
+
+## 이용 기준
+가격은 각 페이지의 적용 기간과 상품 구분을 함께 인용해 주세요. 수업 시간과 시설 영업시간은 다를 수 있으며, 예약 가능 시간은 상담으로 확인합니다.
