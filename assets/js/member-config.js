@@ -1,0 +1,1 @@
+window.REBOOT_MEMBER_CONFIG={appUrl:"https://rbt-coupon.onrender.com"};
