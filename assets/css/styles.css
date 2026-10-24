@@ -611,3 +611,9 @@ h3 { font-size: clamp(1.3rem, 2.4vw, 1.7rem); }
   }
   .nav[data-open="true"] .nav__links a { padding: .85rem 1rem; }
 }
+
+/* Discreet, keyboard-accessible staff entry at the very bottom. */
+.footer__admin { display:flex; justify-content:flex-end; margin-top:var(--sp-4); }
+.footer__admin a { color:#94a3b8; font-size:12px; line-height:1.6; padding:8px 0 0 12px; }
+.footer__admin a:hover { color:#e2e8f0; }
+.footer__admin a:focus-visible { outline:2px solid #94a3b8; outline-offset:4px; border-radius:2px; }
